@@ -56,6 +56,7 @@
     "sequelize": "^3.24.6",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0",
+    "victory": "^0.15.0",
     "watson-developer-cloud": "^2.15.2"
   },
   "devDependencies": {
