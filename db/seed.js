@@ -1,5 +1,6 @@
 'use strict';
 
+const chalk = require('chalk');
 const chance = require('chance')(123);
 const Promise = require('bluebird');
 
@@ -112,18 +113,18 @@ function createUsers () {
 function seed () {
   return Question.bulkCreate(questionsJSON)
     .then(createdQuestions => {
-      console.log(`Seeded ${createdQuestions.length} questions OK`);
+      console.log(chalk.yellow(`Seeded ${createdQuestions.length} questions OK`));
       return createUsers();
     })
     .then(createdUsers => {
-      console.log(`Seeded ${createdUsers.length} users OK`);
+      console.log(chalk.yellow(`Seeded ${createdUsers.length} users OK`));
     });
 }
 
 db.didSync
   .then(() => db.sync({force: true}))
   .then(seed)
-  .then(users => console.log('Seeded successfully!'))
+  .then(users => console.log(chalk.yellow('Seeded successfully!')))
   .catch(error => console.error(error))
   .finally(() => db.close());
 
