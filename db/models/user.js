@@ -15,7 +15,7 @@ const User = db.define('users', {
 		}
   },
   gender: Sequelize.STRING,
-  dob: Sequelize.DATE,
+  dob: Sequelize.STRING,
   occupation: Sequelize.STRING,
   incomeLevel: Sequelize.STRING,
   ethnicity: Sequelize.STRING,
