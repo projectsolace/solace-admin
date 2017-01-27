@@ -67,6 +67,7 @@ module.exports = require('express').Router()
         speech_to_text.recognize(params, (err, resp) => {
             if (err) console.log(err);
             else {
+              // on "finish" code
               resp = convertText(resp);
               Recording.create({ text: resp })
                   .then(recording => {
