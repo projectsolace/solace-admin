@@ -50,6 +50,17 @@ function convertToneData(obj) {
 }
 
 module.exports = require('express').Router()
+
+// test readfile
+  .get('/test', (req, res, next) => {
+    fs.readFile(path.join(__dirname, 'test.txt'), 'utf8', function(err, data) {
+    if (err) throw err;
+    console.log(data);
+  3});
+  })
+
+
+//speech to text to watson route
     .get('/', (req, res, next) => {
         const speech_to_text = new SpeechToTextV1({
             username: '3f0eb922-3f9e-4f20-a075-7664696537f6',
