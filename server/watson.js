@@ -3,6 +3,8 @@ const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insigh
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const fs = require('fs');
 const path = require('path');
+const http = require("http");
+const request = require('request')
 
 const db = require('../db');
 const Recording = db.model('recordings');
@@ -53,10 +55,9 @@ module.exports = require('express').Router()
 
 // test readfile
   .get('/test', (req, res, next) => {
-    fs.readFile(path.join(__dirname, 'test.txt'), 'utf8', function(err, data) {
-    if (err) throw err;
-    console.log(data);
-  3});
+    const file = fs.createWriteStream("file.wav");
+    console.log(file.path)
+    res.send('butt')
   })
 
 
@@ -67,12 +68,18 @@ module.exports = require('express').Router()
             password: '6lY3qlbd00Ah'
         });
 
+
+        let file = fs.createWriteStream("file2.wav")
+        let stream = request('https://watsonapi.s3.amazonaws.com/%2Ftest.wav').pipe(file)
+        stream.on('finish', function(){
+
+        file = fs.createReadStream('file2.wav')
+
         const params = {
             // From file
-            audio: fs.createReadStream(path.join(__dirname, 'LailaFlac.flac')),
-            content_type: 'audio/flac',
-            continuous: true,
-            model: 'en-US_NarrowbandModel'
+            audio: file,
+            content_type: 'audio/wav',
+            continuous: true
         };
 
         speech_to_text.recognize(params, (err, resp) => {
@@ -121,3 +128,5 @@ module.exports = require('express').Router()
               }
         })
     })
+
+  })
