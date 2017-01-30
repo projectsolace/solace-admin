@@ -6,29 +6,43 @@ const Recording = db.model('recordings')
 
 const {mustBeLoggedIn, forbidden,} = require('./auth.filters')
 
-function parseOverTimeData(recordings){
+function parseOverTimeData(recordings) {
 	let overTimeObject = {}
-	let datapersonality=[]
+	let datapersonality = []
 	let datatonal = []
-			for(var i=0;i<47;i++){
-		  		datapersonality.push({key: recordings[0].personality[i].quality, value:[]})
+	for (var i = 0; i < 47; i++) {
+		datapersonality.push({
+			key: recordings[0].personality[i].quality,
+			value: []
+		})
 
-		  		recordings.forEach(function(obj){
-		    	datapersonality[i].value.push({date:obj.created_at, quality:obj.personality[i].quality, score:obj.personality[i].score})
-  	})
-		}
-			overTimeObject.personality = datapersonality
+		recordings.forEach(function(obj) {
+			datapersonality[i].value.push({
+				date: obj.created_at,
+				quality: obj.personality[i].quality,
+				score: obj.personality[i].score
+			})
+		})
+	}
+	overTimeObject.personality = datapersonality
 
-			for(var i=0;i<13;i++){
-  				datatonal.push({key: recordings[0].tone[i].quality, value:[]})
-  				recordings.forEach(function(obj){
+	for (var i = 0; i < 13; i++) {
+		datatonal.push({
+			key: recordings[0].tone[i].quality,
+			value: []
+		})
+		recordings.forEach(function(obj) {
 
-    			datatonal[i].value.push({date:obj.created_at, quality:obj.tone[i].quality, score:obj.tone[i].score})
+			datatonal[i].value.push({
+				date: obj.created_at,
+				quality: obj.tone[i].quality,
+				score: obj.tone[i].score
+			})
 
- 		})
-		}
-			overTimeObject.tonal = datatonal
-			return overTimeObject
+		})
+	}
+	overTimeObject.tonal = datatonal
+	return overTimeObject
 
 }
 
