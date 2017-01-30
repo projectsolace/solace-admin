@@ -41,8 +41,11 @@ function convertToneData(obj) {
     return data;
 }
 
+function parseAdmin(Users){
+    return Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" ")
+}
+
 function sendToWatson(text){
-  let personalityObject = {personality:[],tone:[]}
 
   const personality_insights = new PersonalityInsightsV3({
           username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
@@ -56,121 +59,163 @@ function sendToWatson(text){
           version_date: '2016-05-19'
         });
 
-         personality_insights.profile({
+    const promisifiedProfile = function() {
+      return new Promise(function(resolve, reject) {
+        personality_insights.profile({
             text: text,
             consumption_preferences: true
         }, (err, response) => {
-              if (err) console.log(err);
-              else {
-                response = convertPersonalityData(response);
-                 personalityObject['personality'] = response
+          if (err) reject(err);
+          else resolve(response);
+        })
+      })
+    }
+
+    const promisifiedTone = function() {
+      return new Promise(function(resolve, reject) {
         tone_analyzer.tone({
           text: text
-           }, (err, tone) => {
-              if (err) console.log(err);
-              else {
-                  tone = convertToneData(tone);
-                  personalityObject['tone'] = tone
-                  console.log(personalityObject)
-            }
-          })
-
-                }
+        }, (err, tone) => {
+          if (err) reject(err);
+          else resolve(tone);
         })
+      })
+    }
 
+  let p1 = promisifiedProfile()
+  let p2 = promisifiedTone()
+
+  return Promise.all([p1,p2])
 
       }
 
 module.exports = require('express').Router()
 
-  .get('/religion/test', (req, res, next) =>{
-    let watson = sendToWatson(`I stand here today humbled by the task before us, grateful for the trust you have bestowed, mindful of the sacrifices borne by our ancestors. I thank President Bush for his service to our nation, as well as the generosity and cooperation he has shown throughout this transition. Forty-four Americans have now taken the presidential oath. The words have been spoken during rising tides of prosperity and the still waters of peace. Yet, every so often the oath is taken amidst gathering clouds and raging storms. At these moments, America has carried on not simply because of the skill or vision of those in high office, but because We the People have remained faithful to the ideals of our forbearers, and true to our founding documents. So it has been. So it must be with this generation of Americans.That we are in the midst of crisis is now well understood. Our nation is at war, against a far-reaching network of violence and hatred. Our economy is badly weakened, a consequence of greed and irresponsibility on the part of some, but also our collective failure to make hard choices and prepare the nation for a new age. Homes have been lost; jobs shed; businesses shuttered. Our health care is too costly; our schools fail too many; and each day brings further evidence that the ways we use energy strengthen our adversaries and threaten our planet.`)
-    res.send(watson)
-   })
 
-  .get('/religion/:string', (req, res, next) =>
+///RELIGION
+  .get('/religion/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
     User.findAll({
         where: { religion: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
+    .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-  .get('/occupation/:string', (req, res, next) =>
+//OCCUPATION
+  .get('/occupation/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
      User.findAll({
         where: { occupation: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-  .get('/incomeLevel/:string', (req, res, next) =>
+// INCOME LEVEL
+   .get('/incomeLevel/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
      User.findAll({
         where: { incomeLevel: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-  .get('/ethnicity/:string', (req, res, next) =>
+// ETHNICITY
+   .get('/ethnicity/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
      User.findAll({
         where: { ethnicity: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-  .get('/education/:string', (req, res, next) =>
-    User.findAll({
+// EDUCATION
+   .get('/education/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
+     User.findAll({
         where: { education: req.params.string },
         include: [{
         model: Recording
     }]
 })
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
-
-  .get('/maritalStatus/:string', (req, res, next) =>
+// MARITAL STATUS
+   .get('/maritalStatus/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
      User.findAll({
         where: { maritalStatus: req.params.string },
         include: [{
         model: Recording
     }]
 })
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
-
-  .get('/zipCode/:string', (req, res, next) =>
+// ZIP CODE
+  .get('/zipCode/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
      User.findAll({
         where: { zipCode: Number(req.params.string) },
         include: [{
         model: Recording
     }]
 })
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })
 
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
-
-  .get('/gender/:string', (req, res, next) =>
+// GENDER
+  .get('/gender/:string', (req, res, next) =>{
+    let personalityObject = {personality:[],tone:[]}
      User.findAll({
         where: { gender: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
-    .catch(next)))
-
-
-
-// for each route we will eager load all recordings assocaited with users, map through all the users/recordings and create massize text stirng and then send over that string to watson, get back the data and analyze/
+   .then(Users => sendToWatson(parseAdmin(Users)).then(resolved=> {
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
+       res.send(personalityObject)
+    }))
+  })

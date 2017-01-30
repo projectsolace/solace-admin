@@ -53,13 +53,6 @@ function convertToneData(obj) {
 
 module.exports = require('express').Router()
 
-// test readfile
-  .get('/test', (req, res, next) => {
-    const file = fs.createWriteStream("file.wav");
-    console.log(file.path)
-    res.send('butt')
-  })
-
 
 //speech to text to watson route
     .get('/', (req, res, next) => {
@@ -75,7 +68,7 @@ module.exports = require('express').Router()
 
         file = fs.createReadStream('file2.wav')
 
-        const params = {
+        const config = {
             // From file
             audio: file,
             content_type: 'audio/wav',
