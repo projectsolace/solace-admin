@@ -42,7 +42,7 @@ function convertToneData(obj) {
 }
 
 function sendToWatson(text){
-  let personalityObject = {}
+  let personalityObject = {personality:[],tone:[]}
 
   const personality_insights = new PersonalityInsightsV3({
           username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
@@ -50,36 +50,35 @@ function sendToWatson(text){
           version_date: '2016-10-19'
         });
 
-        personality_insights.profile({
-            text: text,
-            consumption_preferences: true
-        }, (err, response) => {
-              if (err) console.log(err);
-              else {
-                response = convertPersonalityData(response);
-                console.log("wha is response", response)
-                 personalityObject.personality = response
-                }
-        })
-
     const tone_analyzer = new ToneAnalyzerV3({
           username: '973b3ea5-4733-4fd3-a5af-f1edb7ddd485',
           password: '1E3Qbkhx3RKI',
           version_date: '2016-05-19'
         });
 
+         personality_insights.profile({
+            text: text,
+            consumption_preferences: true
+        }, (err, response) => {
+              if (err) console.log(err);
+              else {
+                response = convertPersonalityData(response);
+                 personalityObject['personality'] = response
         tone_analyzer.tone({
           text: text
            }, (err, tone) => {
               if (err) console.log(err);
               else {
                   tone = convertToneData(tone);
-                  personalityObject.tone = tone
-
+                  personalityObject['tone'] = tone
+                  console.log(personalityObject)
             }
           })
-        console.log('HEELLO~~~~~~~~~~~~~~~~~', personalityObject)
-        return personalityObject
+
+                }
+        })
+
+
       }
 
 module.exports = require('express').Router()
@@ -96,78 +95,81 @@ module.exports = require('express').Router()
         model: Recording
     }]
 })
-    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text)))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
     .catch(next)))
 
   .get('/occupation/:string', (req, res, next) =>
      User.findAll({
-        where: { religion: req.params.string },
+        where: { occupation: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users))
-    .catch(next))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
 
   .get('/incomeLevel/:string', (req, res, next) =>
      User.findAll({
-        where: { religion: req.params.string },
+        where: { incomeLevel: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users))
-    .catch(next))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
 
   .get('/ethnicity/:string', (req, res, next) =>
      User.findAll({
-        where: { religion: req.params.string },
+        where: { ethnicity: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users))
-    .catch(next))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
 
   .get('/education/:string', (req, res, next) =>
     User.findAll({
-        where: { religion: req.params.string },
+        where: { education: req.params.string },
         include: [{
         model: Recording
     }]
 })
 
-    .then(Users => res.json(Users))
-    .catch(next))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
+
   .get('/maritalStatus/:string', (req, res, next) =>
      User.findAll({
-        where: { religion: req.params.string },
+        where: { maritalStatus: req.params.string },
         include: [{
         model: Recording
     }]
 })
 
-    .then(Users => res.json(Users))
-    .catch(next))
-  .get('/zip/:string', (req, res, next) =>
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
+
+  .get('/zipCode/:string', (req, res, next) =>
      User.findAll({
-        where: { religion: req.params.string },
+        where: { zipCode: Number(req.params.string) },
         include: [{
         model: Recording
     }]
 })
 
-    .then(Users => res.json(Users))
-    .catch(next))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
+
   .get('/gender/:string', (req, res, next) =>
      User.findAll({
-        where: { religion: req.params.string },
+        where: { gender: req.params.string },
         include: [{
         model: Recording
     }]
 })
-    .then(Users => res.json(Users))
-    .catch(next))
+    .then(Users => res.json(Users.map(user=>user.recordings.map(recording=>recording.text))[0].join(" "))
+    .catch(next)))
 
 
 
