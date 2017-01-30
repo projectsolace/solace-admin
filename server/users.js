@@ -28,12 +28,19 @@ module.exports = require('express').Router()
 		.catch(next))
 
 	.get('/:id/weekrecordings', mustBeLoggedIn, (req, res, next) =>
-		Recording.findAll({where:{}})
+		Recording.findAll({
+			where: {
+		   createdAt: {
+    			$gt: new Date(new Date() - 7*24 * 60 * 60 * 1000)
+     				 }}})
 		.then(recordings => res.json(recordings))
 		.catch(next))
 
 	.get('/:id/monthrecordings', mustBeLoggedIn, (req, res, next) =>
-		Recording.findAll({where:{}})
+		Recording.findAll({where: {
+		   createdAt: {
+    			$gt: new Date(new Date() - 30*24 * 60 * 60 * 1000)
+     				 }}})
 		.then(recordings => res.json(recordings))
 		.catch(next))
 
