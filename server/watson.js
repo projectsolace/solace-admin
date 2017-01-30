@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require("http");
 const request = require('request')
+const Promise = require('bluebird')
 
 const db = require('../db');
 const Recording = db.model('recordings');
@@ -19,7 +20,6 @@ function convertText(obj) {
 
 function convertPersonalityData(obj) {
     let data = [];
-    const keys = Object.keys(obj);
     for (let key in obj) {
         if (key === 'personality') {
             for (let i = 0; i < obj.personality.length; i++) {
@@ -75,7 +75,41 @@ module.exports = require('express').Router()
             continuous: true
         };
 
-        speech_to_text.recognize(config, (err, resp) => {
+        // // Promisification example:
+        // utils.promisifiedReadFile = function (filename) {
+        //   return new Promise(function (resolve, reject) {
+        //     utils.readFile(filename, function (err, str) {
+        //       if (err) reject(err);
+        //       else resolve(str);
+        //     });
+        //   });
+        // };
+
+        // // http://bluebirdjs.com/docs/api/new-promise.html
+
+        // const promisifiedRecognize = function() {
+        //   return new Promise(function(resolve, reject){
+        //     speech_to_text.recognize(params, (err, resp) => {
+        //     if (err) reject(err);
+        //     else resolve(resp);
+        //   });
+        // }
+
+        // promisifiedRecognize()
+        // .then(resp => convertText(resp))
+        // .then(convertedResp => Recording.create({ text: convertedResp}))
+        // .then(recording => {
+        //   const personality_insights = new PersonalityInsightsV3({
+        //       username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
+        //       password: 'qK2HGTmsrYdO',
+        //       version_date: '2016-10-19'
+        //   });
+
+        //   return promisifiedProfile()
+        // })
+        // .then(resp => )
+
+        speech_to_text.recognize(params, (err, resp) => {
             if (err) console.log(err);
             else {
               // on "finish" code

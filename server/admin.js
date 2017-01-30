@@ -46,7 +46,6 @@ function parseAdmin(Users){
 }
 
 function sendToWatson(text){
-  console.log('HERE WE ARE', typeof text)
 
   const personality_insights = new PersonalityInsightsV3({
           username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
@@ -109,7 +108,6 @@ module.exports = require('express').Router()
     }))
   })
 
-
 //OCCUPATION
   .get('/occupation/:string', (req, res, next) =>{
     let personalityObject = {personality:[],tone:[]}
@@ -141,7 +139,6 @@ module.exports = require('express').Router()
        res.send(personalityObject)
     }))
   })
-
 
 // ETHNICITY
    .get('/ethnicity/:string', (req, res, next) =>{
@@ -222,6 +219,3 @@ module.exports = require('express').Router()
        res.send(personalityObject)
     }))
   })
-
-
-
