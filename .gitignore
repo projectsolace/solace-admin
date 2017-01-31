@@ -15,5 +15,5 @@ public/bundle.js.map
 npm-debug.log
 
 # Secrets
-server/config.json
+config.json
 
