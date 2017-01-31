@@ -1,6 +1,9 @@
 # Ignore all node_modules
 node_modules/*
 
+# Ignore .DS_Store
+.DS_Store
+
 # ...except the symlink to ourselves.
 !node_modules/APP
 
@@ -11,5 +14,6 @@ public/bundle.js.map
 # NPM errors
 npm-debug.log
 
-.DS_Store
+# Secrets
+server/config.json
 
