@@ -46,19 +46,6 @@ router.post('/sessions/create', function(req, res, next) {
   if (!userScheme.email || !userScheme.password) {
     return res.status(400).send("You must send the username and the password");
   }
-
-  let getPassword = () => {
-    return new Promise((resolve, reject) =>
-      bcrypt.hash(userScheme.password, 10, (err, hash) => {
-        if (err) reject(err)
-        else resolve(hash);
-      })
-    )};
-
-
-  // getPassword()
-  // .then(hashedPassword => {
-  //   console.log('hashed', hashedPassword)
     User.findOne({
       where: {
         email: userScheme.email
@@ -76,7 +63,7 @@ router.post('/sessions/create', function(req, res, next) {
             user: user
           });
         }
-      })
+      });
     })
     .catch(next);
   });
