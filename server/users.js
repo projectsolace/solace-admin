@@ -8,9 +8,7 @@ const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 const {mustBeLoggedIn, forbidden,} = require('./auth.filters')
 
-<<<<<<< HEAD
-function parseOverTimeData(recordings) {
-=======
+
 function convertPersonalityData(obj) {
     let data = [];
     const keys = Object.keys(obj);
@@ -46,7 +44,6 @@ function convertToneData(obj) {
 }
 
 function parseOverTimeData(recordings){
->>>>>>> a208bf480ebdc069201f313000de01dcf3f8139d
 	let overTimeObject = {}
 	let datapersonality = []
 	let datatonal = []
@@ -146,6 +143,24 @@ module.exports = require('express').Router()
 		User.findById(req.params.id)
 		.then(user => res.json(user))
 		.catch(next))
+  .put('/:id', (req, res, next) => {
+    User.update(req.body, {
+      where: {
+        id: +req.params.id
+      },
+      returning: true
+    })
+    .then(([amountOfUpdatedUsers, arrayOfUpdatedUsers]) => {
+      res.status(200).json(arrayOfUpdatedUsers[0]);
+    })
+    .catch(next);
+  })
+
+  .get('/:id/singleRecording', (req, res, next) => {
+    Recording.findById(+req.params.id)
+    .then(foundRecording => res.json(foundRecording))
+    .catch(next);
+  })
 
 	.get('/:id/allrecordings', (req, res, next) =>
 		Recording.findAll({where: {
