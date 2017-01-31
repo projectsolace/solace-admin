@@ -130,8 +130,12 @@ module.exports = require('express').Router()
 		.catch(next))
 
 	.get('/:id/allrecordings', (req, res, next) =>
-		Recording.findAll()
+		Recording.findAll({where: {
+      user_id: req.params.id
+    }
+    })
 		.then(recordings => {
+      console.log(recordings)
 			res.send(parseOverTimeData(recordings))
 				})
 				.catch(next))
@@ -206,3 +210,6 @@ module.exports = require('express').Router()
        res.send(personalityObject)
 		})
 	})
+
+
+
