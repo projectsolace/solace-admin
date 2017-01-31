@@ -55,7 +55,7 @@ function parseOverTimeData(recordings){
 		}
 			overTimeObject.personality = datapersonality
 
-			for(var i=0;i<13;i++){
+			for(var i=0;i<14;i++){
   				datatonal.push({key: recordings[0].tone[i].quality, value:[]})
   				recordings.forEach(function(obj){
 
@@ -206,3 +206,6 @@ module.exports = require('express').Router()
        res.send(personalityObject)
 		})
 	})
+
+
+
