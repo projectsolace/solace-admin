@@ -7,6 +7,7 @@
 const User = require('./user');
 const Question = require('./question');
 const Recording = require('./recording');
+const Quote = require('./quote');
 
 User.hasMany(Recording);
 Recording.belongsTo(User);
@@ -14,4 +15,4 @@ Recording.belongsTo(User);
 // Question.hasMany(Recording);
 // Recording.belongsTo(Question);
 
-module.exports = {User, Question, Recording}
+module.exports = {User, Question, Recording, Quote}

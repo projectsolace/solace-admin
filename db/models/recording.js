@@ -9,7 +9,8 @@ const Recording = db.define('recordings', {
     allowNull: false,
   },
   personality: Sequelize.JSON,
-  tone: Sequelize.JSON
+  tone: Sequelize.JSON,
+  created_at: Sequelize.DATE
 });
 
 module.exports = Recording;

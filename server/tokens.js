@@ -4,6 +4,7 @@ const config  = require('./config');
 const  _ = require('lodash');
 const db = require('../db');
 const User = db.model('users');
+const bcrypt = require('bcryptjs');
 
 
 const createToken = (user) => {
@@ -46,21 +47,44 @@ router.post('/sessions/create', function(req, res, next) {
     return res.status(400).send("You must send the username and the password");
   }
 
-  User.findOne({
-    where: userScheme
-  })
-  .then(user => {
-    if (!user) {
-      res.status(400).send("Invalid information");
-    } else {
-      res.status(201).send({
-        id_token: createToken(user)
-      });
-      // res.redirect('/api/protected/' + user.email);
-    }
-  })
-  .catch(next);
+  let getPassword = () => {
+    return new Promise((resolve, reject) =>
+      bcrypt.hash(userScheme.password, 10, (err, hash) => {
+        if (err) reject(err)
+        else resolve(hash);
+      })
+    )};
+
+
+  getPassword()
+  .then(hashedPassword => {
+    console.log('hashed', hashedPassword)
+    User.findOne({
+      where: {
+        password_digest: hashedPassword
+      }
+    })
+    .then(user => {
+      console.log('user', user);
+      if (!user) {
+        res.status(400).send("Invalid information");
+      } else {
+        console.log(user);
+        res.status(201).send({
+          id_token: createToken(user),
+          user: user
+        });
+        // res.redirect('/api/protected/' + user.email);
+      }
+    })
+    .catch(next);
+  });
 });
+
+// bcrypt.hash(user.get('password'), 10, (err, hash) => {
+//   if (err) reject(err)
+//   user.set('password_digest', hash)
+//   resolve(user)
 
 
 module.exports = router;
