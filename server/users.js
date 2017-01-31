@@ -8,6 +8,7 @@ const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 const {mustBeLoggedIn, forbidden,} = require('./auth.filters')
 
+
 function convertPersonalityData(obj) {
     let data = [];
     const keys = Object.keys(obj);
@@ -44,27 +45,41 @@ function convertToneData(obj) {
 
 function parseOverTimeData(recordings){
 	let overTimeObject = {}
-	let datapersonality=[]
+	let datapersonality = []
 	let datatonal = []
-			for(var i=0;i<47;i++){
-		  		datapersonality.push({key: recordings[0].personality[i].quality, value:[]})
+	for (var i = 0; i < 47; i++) {
+		datapersonality.push({
+			key: recordings[0].personality[i].quality,
+			value: []
+		})
 
-		  		recordings.forEach(function(obj){
-		    	datapersonality[i].value.push({date:obj.created_at, quality:obj.personality[i].quality, score:obj.personality[i].score})
-  	})
-		}
-			overTimeObject.personality = datapersonality
+		recordings.forEach(function(obj) {
+			datapersonality[i].value.push({
+				date: obj.created_at,
+				quality: obj.personality[i].quality,
+				score: obj.personality[i].score
+			})
+		})
+	}
+	overTimeObject.personality = datapersonality
 
-			for(var i=0;i<13;i++){
-  				datatonal.push({key: recordings[0].tone[i].quality, value:[]})
-  				recordings.forEach(function(obj){
+	for (var i = 0; i < 13; i++) {
+		datatonal.push({
+			key: recordings[0].tone[i].quality,
+			value: []
+		})
+		recordings.forEach(function(obj) {
 
-    			datatonal[i].value.push({date:obj.created_at, quality:obj.tone[i].quality, score:obj.tone[i].score})
+			datatonal[i].value.push({
+				date: obj.created_at,
+				quality: obj.tone[i].quality,
+				score: obj.tone[i].score
+			})
 
- 		})
-		}
-			overTimeObject.tonal = datatonal
-			return overTimeObject
+		})
+	}
+	overTimeObject.tonal = datatonal
+	return overTimeObject
 
 }
 
@@ -128,6 +143,24 @@ module.exports = require('express').Router()
 		User.findById(req.params.id)
 		.then(user => res.json(user))
 		.catch(next))
+  .put('/:id', (req, res, next) => {
+    User.update(req.body, {
+      where: {
+        id: +req.params.id
+      },
+      returning: true
+    })
+    .then(([amountOfUpdatedUsers, arrayOfUpdatedUsers]) => {
+      res.status(200).json(arrayOfUpdatedUsers[0]);
+    })
+    .catch(next);
+  })
+
+  .get('/:id/singleRecording', (req, res, next) => {
+    Recording.findById(+req.params.id)
+    .then(foundRecording => res.json(foundRecording))
+    .catch(next);
+  })
 
 	.get('/:id/allrecordings', (req, res, next) =>
 		Recording.findAll({where: {
