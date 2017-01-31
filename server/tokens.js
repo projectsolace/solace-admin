@@ -56,35 +56,30 @@ router.post('/sessions/create', function(req, res, next) {
     )};
 
 
-  getPassword()
-  .then(hashedPassword => {
-    console.log('hashed', hashedPassword)
+  // getPassword()
+  // .then(hashedPassword => {
+  //   console.log('hashed', hashedPassword)
     User.findOne({
       where: {
-        password_digest: hashedPassword
+        email: userScheme.email
       }
     })
     .then(user => {
-      console.log('user', user);
-      if (!user) {
-        res.status(400).send("Invalid information");
-      } else {
-        console.log(user);
-        res.status(201).send({
-          id_token: createToken(user),
-          user: user
-        });
-        // res.redirect('/api/protected/' + user.email);
-      }
+      return user.authenticate(userScheme.password)
+      .then(verifiedUser => {
+        if (!verifiedUser) {
+          res.status(400).send("Invalid information");
+        } else {
+          console.log(user);
+          res.status(201).send({
+            id_token: createToken(user),
+            user: user
+          });
+        }
+      })
     })
     .catch(next);
   });
-});
-
-// bcrypt.hash(user.get('password'), 10, (err, hash) => {
-//   if (err) reject(err)
-//   user.set('password_digest', hash)
-//   resolve(user)
 
 
 module.exports = router;
