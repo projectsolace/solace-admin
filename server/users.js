@@ -55,7 +55,7 @@ function parseOverTimeData(recordings){
 		}
 			overTimeObject.personality = datapersonality
 
-			for(var i=0;i<14;i++){
+			for(var i=0;i<13;i++){
   				datatonal.push({key: recordings[0].tone[i].quality, value:[]})
   				recordings.forEach(function(obj){
 
@@ -130,8 +130,12 @@ module.exports = require('express').Router()
 		.catch(next))
 
 	.get('/:id/allrecordings', (req, res, next) =>
-		Recording.findAll()
+		Recording.findAll({where: {
+      user_id: req.params.id
+    }
+    })
 		.then(recordings => {
+      console.log(recordings)
 			res.send(parseOverTimeData(recordings))
 				})
 				.catch(next))
