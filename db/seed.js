@@ -10,10 +10,12 @@ const Question = require('APP/db/models/question');
 const Quote = require('APP/db/models/quote')
 const Recording = require('APP/db/models/recording');
 
-const numUsers = 200;
+const numUsers = 100;
+const numRecordings = 500;
 const emails = chance.unique(chance.email, numUsers);
 const questionsJSON = require('./questionsSeed');
-const quotesJSON = require('./quotesSeed')
+const quotesJSON = require('./quotesSeed');
+const recordingsJSON = require('./recordingsSeed');
 
 function doTimes (n, fn) {
   const results = [];
@@ -117,25 +119,11 @@ function createUsers () {
   });
 }
 
-
 function randRecording (createdUsers) {
   const user = chance.pick(createdUsers);
+  const randomText = chance.pickset(recordingsJSON, 2).reduce((a, b) => a + b.text, '');
   return Recording.build({
-    text: `On behalf of the great state of Illinois, crossroads of a nation, Land of Lincoln, let me express my deepest gratitude for the privilege of addressing this convention.
-
-Tonight is a particular honor for me because, let’s face it, my presence on this stage is pretty unlikely. My father was a foreign student, born and raised in a small village in Kenya. He grew up herding goats, went to school in a tin-roof shack. His father -- my grandfather -- was a cook, a domestic servant to the British.
-
-But my grandfather had larger dreams for his son. Through hard work and perseverance my father got a scholarship to study in a magical place, America, that shone as a beacon of freedom and opportunity to so many who had come before.
-
-While studying here, my father met my mother. She was born in a town on the other side of the world, in Kansas. Her father worked on oil rigs and farms through most of the Depression. The day after Pearl Harbor my grandfather signed up for duty; joined Patton’s army, marched across Europe. Back home, my grandmother raised a baby and went to work on a bomber assembly line. After the war, they studied on the G.I. Bill, bought a house through F.H.A., and later moved west all the way to Hawaii in search of opportunity.
-
-And they, too, had big dreams for their daughter. A common dream, born of two continents.
-
-My parents shared not only an improbable love, they shared an abiding faith in the possibilities of this nation. They would give me an African name, Barack, or ”blessed,” believing that in a tolerant America your name is no barrier to success. They imagined -- They imagined me going to the best schools in the land, even though they weren’t rich, because in a generous America you don’t have to be rich to achieve your potential.
-
-They're both passed away now. And yet, I know that on this night they look down on me with great pride.
-
-They stand here, and I stand here today, grateful for the diversity of my heritage, aware that my parents’ dreams live on in my two precious daughters. I stand here knowing that my story is part of the larger American story, that I owe a debt to all of those who came before me, and that, in no other country on earth, is my story even possible.`,
+    text: randomText,
     personality: [
       {"quality":"Adventurousness","score":Math.random()},
       {"quality":"Artistic interests","score":Math.random()},
@@ -204,8 +192,6 @@ They stand here, and I stand here today, grateful for the diversity of my herita
     created_at: new Date(new Date() - 24 * 60 * 60 * 1000*Math.floor(Math.random()*60))
   });
 }
-
-const numRecordings = 500
 
 function generateRecordings(createdUsers) {
   return doTimes(numRecordings, function() {
