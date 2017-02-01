@@ -13,7 +13,3 @@ public/bundle.js.map
 
 # NPM errors
 npm-debug.log
-
-# Secrets
-server/configuration.json
-
