@@ -5,7 +5,8 @@ import store from '../store'
 function mapStateToProps(state) {
 
   return {
-    admin: state.admin
+    admin: state.admin,
+    user: state.auth
   };
 }
 function mapDispatchToProps(state) {

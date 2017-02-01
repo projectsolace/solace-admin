@@ -114,10 +114,11 @@ export default class Chart extends Component {
     let tone = this.state.currentGraph.tone
     let tonaldata= tone.sort(function(a,b){return b.score - a.score}).map(function(obj){return {x:tonecount++,y:obj.score*100}})
     let tonelabels= tone.map(function(obj){return obj.quality+` ${(obj.score*100).toFixed(2)}%`})
-
+    if(this.props.user.isAdmin){
     return (
       <div>
       ADMIN PANEL
+    <br/>
     <span> Religion </span>
      <form onSubmit={this.onSubmitReligionHandler}>
     <select onChange={(event) => this.setState({religion: event.target.value})}>
@@ -170,7 +171,7 @@ export default class Chart extends Component {
       <option value="$150,000-to-$199,999">$150,000 to $199,999</option>
       <option value="$200,000-and-over">$200,000 and over</option>
     </select>
-    <input type='submit' value='Search'/>
+    <input type='submit'/>
     </form>
       <br/>
        <span> Education </span>
@@ -199,8 +200,9 @@ export default class Chart extends Component {
     </form>
       <br/>
       <span> Zip </span>
-       <form onSubmit={this.onSubmitZipHandler}>
-      <input />
+      <form onSubmit={this.onSubmitZipHandler}>
+      <input onChange={(event) => this.setState({zip: event.target.value})}/>
+      <input type='submit'/>
       </form>
       <br/>
       <span> Gender </span>
@@ -230,6 +232,13 @@ export default class Chart extends Component {
       <br/>
       <BarChart data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
       </div>
+    )
+  }
+  return (
+    <div>
+    HELLO WORLD
+    </div>
+
     )
   }
 }
