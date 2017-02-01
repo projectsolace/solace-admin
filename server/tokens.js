@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-const config  = require('./configuration');
 const  _ = require('lodash');
 const db = require('../db');
 const User = db.model('users');
@@ -8,7 +7,7 @@ const bcrypt = require('bcryptjs');
 
 
 const createToken = (user) => {
-  return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60*60*5 });
+  return jwt.sign(_.omit(user, 'password'), 'HelloWorld', { expiresIn: 60*60*5 });
 };
 
 
