@@ -84,7 +84,8 @@ function parseOverTimeData(recordings){
 }
 
 function sendToWatson(text){
-  console.log('HERE WE ARE', typeof text)
+
+  text = text.substr(0,80000)
 
   const personality_insights = new PersonalityInsightsV3({
           username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
@@ -156,9 +157,13 @@ module.exports = require('express').Router()
     .catch(next);
   })
 
-  .get('/:id/singleRecording', (req, res, next) => {
-    Recording.findById(+req.params.id)
-    .then(foundRecording => res.json(foundRecording))
+  .get('/:id/singlerecording', (req, res, next) => {
+    Recording.findOne({
+      where: {
+       created_at: {
+          $gt: new Date(new Date() - 24 * 60 * 60 * 1000)
+             }}})
+    .then(foundRecording => res.json({personality:foundRecording.personality, tone:foundRecording.tone}))
     .catch(next);
   })
 

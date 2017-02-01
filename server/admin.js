@@ -47,6 +47,8 @@ function parseAdmin(Users){
 
 function sendToWatson(text){
 
+  text = text.substr(0,80000)
+
   const personality_insights = new PersonalityInsightsV3({
           username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
           password: 'qK2HGTmsrYdO',
