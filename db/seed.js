@@ -10,7 +10,7 @@ const Question = require('APP/db/models/question');
 const Quote = require('APP/db/models/quote')
 const Recording = require('APP/db/models/recording');
 
-const numUsers = 100;
+const numUsers = 96;
 const numRecordings = 500;
 const emails = chance.unique(chance.email, numUsers);
 const questionsJSON = require('./questionsSeed');
@@ -44,72 +44,80 @@ function randUser () {
   });
 }
 
+const jenny = {
+  firstName: 'Jenny',
+  lastName: 'Chan',
+  isAdmin: true,
+  email: 'jenny@jenny.jenny',
+  gender: 'female',
+  dob: '9/14/1992',
+  occupation: 'student',
+  incomeLevel: 'Under $15,000',
+  ethnicity: 'Asian',
+  religion: 'Buddhism',
+  education: 'Bachelor degree or more',
+  maritalStatus: 'Single',
+  zipCode: 11214,
+  password: '123'
+};
+
+const anuj = {
+  firstName: 'Anuj',
+  lastName: 'Shah',
+  isAdmin: true,
+  email: 'anuj@anuj.anuj',
+  gender: 'male',
+  dob: '8/12/1980',
+  occupation: 'engineer',
+  incomeLevel: '$200,000 and over',
+  ethnicity: 'Indian',
+  religion: 'Hinduism',
+  education: 'Bachelor degree or more',
+  maritalStatus: 'Single',
+  zipCode: 10004,
+  password: '123'
+};
+
+const winston = {
+  firstName: 'Winston',
+  lastName: 'Wang',
+  isAdmin: true,
+  email: 'winston@winston.winston',
+  gender: 'male',
+  dob: '10/14/1990',
+  occupation: 'lawyer',
+  incomeLevel: '$75,000 to $99,999',
+  ethnicity: 'Asian',
+  religion: 'Other',
+  education: 'Bachelor degree or more',
+  maritalStatus: 'Single',
+  zipCode: 90210,
+  password: '123'
+};
+
+const jimmy = {
+  firstName: 'Jimmy',
+  lastName: 'Wang',
+  isAdmin: true,
+  email: 'jimmy@jimmy.jimmy',
+  gender: 'male',
+  dob: '12/2/1990',
+  occupation: 'accountant',
+  incomeLevel: '$50,000 to $74,999',
+  ethnicity: 'Asian',
+  religion: 'Other',
+  education: 'Bachelor degree or more',
+  maritalStatus: 'Single',
+  zipCode: 89109,
+  password: '123'
+};
+
 function generateUsers () {
   const users = doTimes(numUsers, randUser);
-  users.push(User.build({
-    firstName: 'Jenny',
-    lastName: 'Chan',
-    isAdmin: true,
-    email: 'jenny@jenny.jenny',
-    gender: 'female',
-    dob: '9/14/1992',
-    occupation: 'student',
-    incomeLevel: 'Under $15,000',
-    ethnicity: 'Asian',
-    religion: 'Buddhism',
-    education: 'Bachelor degree or more',
-    maritalStatus: 'Single',
-    zipCode: 11214,
-    password: '123'
-  }));
-  users.push(User.build({
-    firstName: 'Anuj',
-    lastName: 'Shah',
-    isAdmin: true,
-    email: 'anuj@anuj.anuj',
-    gender: 'male',
-    dob: '8/12/1980',
-    occupation: 'engineer',
-    incomeLevel: '$200,000 and over',
-    ethnicity: 'Indian',
-    religion: 'Hinduism',
-    education: 'Bachelor degree or more',
-    maritalStatus: 'Single',
-    zipCode: 10004,
-    password: '123'
-  }));
-  users.push(User.build({
-    firstName: 'Winston',
-    lastName: 'Wang',
-    isAdmin: true,
-    email: 'winston@winston.winston',
-    gender: 'male',
-    dob: '10/14/1990',
-    occupation: 'lawyer',
-    incomeLevel: '$75,000 to $99,999',
-    ethnicity: 'Asian',
-    religion: 'Other',
-    education: 'Bachelor degree or more',
-    maritalStatus: 'Single',
-    zipCode: 90210,
-    password: '123'
-  }));
-  users.push(User.build({
-    firstName: 'Jimmy',
-    lastName: 'Wang',
-    isAdmin: true,
-    email: 'jimmy@jimmy.jimmy',
-    gender: 'male',
-    dob: '12/2/1990',
-    occupation: 'accountant',
-    incomeLevel: '$50,000 to $74,999',
-    ethnicity: 'Asian',
-    religion: 'Other',
-    education: 'Bachelor degree or more',
-    maritalStatus: 'Single',
-    zipCode: 89109,
-    password: '123'
-  }));
+  users.push(User.build(jenny));
+  users.push(User.build(anuj));
+  users.push(User.build(winston));
+  users.push(User.build(jimmy));
   return users;
 }
 
@@ -120,7 +128,7 @@ function createUsers () {
 }
 
 function randRecording (createdUsers) {
-  const user = chance.pick(createdUsers);
+  const user = chance.weighted(createdUsers, [...Array(96).fill(0.625), 10, 10, 10, 10]);
   const randomText = chance.pickset(recordingsJSON, 2).reduce((a, b) => a + b.text, '');
   return Recording.build({
     text: randomText,
