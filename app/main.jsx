@@ -6,6 +6,7 @@ import {connect, Provider} from 'react-redux'
 
 import store from './store'
 import Jokes from './components/Jokes'
+import Chart from './components/ChartContainer'
 import Login from './components/Login'
 import WhoAmI from './components/WhoAmI'
 
@@ -16,7 +17,7 @@ const ExampleApp = connect(
     <div>
       <nav>
         {user ? <WhoAmI/> : <Login/>}
-      </nav> 
+      </nav>
       {children}
     </div>
 )
@@ -27,6 +28,7 @@ render (
       <Route path="/" component={ExampleApp}>
         <IndexRedirect to="/jokes" />
         <Route path="/jokes" component={Jokes} />
+        <Route path='/admin' component={Chart} />
       </Route>
     </Router>
   </Provider>,
