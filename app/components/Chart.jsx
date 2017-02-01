@@ -57,7 +57,7 @@ export default class Chart extends Component {
       this.setState({currentGraph: response.data});
     })
 
-   store.dispatch(fetchIncomeData(this.state.income))
+   //store.dispatch(fetchIncomeData(this.state.income))
   }
    onSubmitMaritalHandler(event){
     event.preventDefault()
@@ -73,7 +73,7 @@ export default class Chart extends Component {
     .then(response => {
       this.setState({currentGraph: response.data});
     })
-   store.dispatch(fetchEducationData(this.state.education))
+   //store.dispatch(fetchEducationData(this.state.education))
   }
    onSubmitEthnicityHandler(event){
     event.preventDefault()
