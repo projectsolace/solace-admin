@@ -114,7 +114,14 @@ export default class Chart extends Component {
     let tone = this.state.currentGraph.tone
     let tonaldata= tone.sort(function(a,b){return b.score - a.score}).map(function(obj){return {x:tonecount++,y:obj.score*100}})
     let tonelabels= tone.map(function(obj){return obj.quality+` ${(obj.score*100).toFixed(2)}%`})
-    if(this.props.user.isAdmin){
+    if(this.props.user.isAdmin === false){
+      return (
+         <div>
+            THIS PAGE IS ONLY FOR ADMINS PLEASE LOGIN THROUGH APP
+        </div>
+     )
+    }
+    else if(this.props.user.isAdmin){
     return (
       <div>
       ADMIN PANEL
@@ -236,7 +243,7 @@ export default class Chart extends Component {
   }
   return (
     <div>
-    HELLO WORLD
+    PLEASE LOGIN AS AN ADMIN
     </div>
 
     )
