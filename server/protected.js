@@ -5,7 +5,7 @@ const db = require('../db');
 const User = db.model('users');
 
 const jwtCheck = jwt({
-  secret: config.secret
+  secret: 'HelloWorld'
 });
 
 router.use('/', jwtCheck);
