@@ -72,7 +72,7 @@ const receiveGenderData = (dataObj) => {
 /* -----------------    DISPATCHERS     ------------------ */
 
 export const fetchReligionData = (religion) => dispatch => {
-  axios.get(`api/admin/religion/${religion}`)
+  axios.post(`api/admin/religion/${religion}`)
     .then(response => {
       dispatch(receiveReligionData(response.data));
     })
@@ -80,7 +80,7 @@ export const fetchReligionData = (religion) => dispatch => {
 };
 
 export const fetchOccupationData = (occupation) => dispatch => {
-  axios.get(`api/admin/occupation/${occupation}`)
+  axios.post(`api/admin/occupation/${occupation}`)
     .then(response => {
       dispatch(receiveOccupationData(response.data));
     })
@@ -88,7 +88,7 @@ export const fetchOccupationData = (occupation) => dispatch => {
 };
 
 export const fetchIncomeData = (income) => dispatch => {
-  axios.get(`api/admin/incomeLevel/${income}`)
+  axios.post(`api/admin/incomeLevel/${income}`)
     .then(response => {
       dispatch(receiveIncomeData(response.data));
     })
@@ -96,7 +96,7 @@ export const fetchIncomeData = (income) => dispatch => {
 };
 
 export const fetchEthnicityData = (ethnicity) => dispatch => {
-  axios.get(`api/admin/ethnicity/${ethnicity}`)
+  axios.post(`api/admin/ethnicity/${ethnicity}`)
     .then(response => {
       dispatch(receiveEthnicityData(response.data));
     })
@@ -104,7 +104,7 @@ export const fetchEthnicityData = (ethnicity) => dispatch => {
 };
 
 export const fetchEducationData = (education) => dispatch => {
-  axios.get(`api/admin/education/${education}`)
+  axios.post(`api/admin/education/${education}`)
     .then(response => {
       dispatch(receiveEducationData(response.data));
     })
@@ -112,7 +112,7 @@ export const fetchEducationData = (education) => dispatch => {
 };
 
 export const fetchMaritalData = (marital) => dispatch => {
-  axios.get(`api/admin/maritalStatus/${marital}`)
+  axios.post(`api/admin/maritalStatus/${marital}`)
     .then(response => {
       dispatch(receiveMaritalData(response.data));
     })
@@ -120,7 +120,7 @@ export const fetchMaritalData = (marital) => dispatch => {
 };
 
 export const fetchZipCodeData = (zipCode) => dispatch => {
-  axios.get(`api/admin/zipCode/${zipCode}`)
+  axios.post(`api/admin/zipCode/${zipCode}`)
     .then(response => {
       dispatch(receiveZipCodeData(response.data));
     })
@@ -128,7 +128,7 @@ export const fetchZipCodeData = (zipCode) => dispatch => {
 };
 
 export const fetchGenderData = (gender) => dispatch => {
-  axios.get(`api/admin/gender/${gender}`)
+  axios.post(`api/admin/gender/${gender}`)
     .then(response => {
       dispatch(receiveGenderData(response.data));
     })

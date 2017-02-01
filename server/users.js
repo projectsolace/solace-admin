@@ -2,6 +2,7 @@
 
 const db = require('APP/db')
 const User = db.model('users')
+const Average = db.model('averages')
 const Recording = db.model('recordings')
 const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
@@ -78,7 +79,7 @@ function parseOverTimeData(recordings){
 
 		})
 	}
-	overTimeObject.tonal = datatonal
+	overTimeObject.tone = datatonal
 	return overTimeObject
 
 }
@@ -201,20 +202,29 @@ module.exports = require('express').Router()
 			})
 		.catch(next))
 
-	.get('/:id/allrecordings/average',(req, res, next) =>{
+	.post('/:id/allrecordings/average',(req, res, next) =>{
 		let personalityObject = {}
 		Recording.findAll()
 		.then(recordings => {
 			return sendToWatson(recordings.reduce(function(a,b){return a+b.text+" "}," "))
 		})
 		.then(resolved=>{
-			 personalityObject['personality'] = convertPersonalityData(resolved[0]);
-       personalityObject['tone'] = convertToneData(resolved[1]);
-       res.send(personalityObject)
-		})
-	})
+			 Average.findOrCreate({where:{
+        user_id: req.params.id,
+        value: 'all'
+        }})
+       .then(average => {
+        average[0].update({
+          value: 'all',
+          personality: personalityObject.personality,
+          tone: personalityObject.tone
+        })
+     })
+    })
+    res.send('Complete')
+  })
 
-	.get('/:id/weekrecordings/average', (req, res, next) =>{
+	.post('/:id/weekrecordings/average', (req, res, next) =>{
 		let personalityObject = {}
 		Recording.findAll({
 			where: {
@@ -228,11 +238,22 @@ module.exports = require('express').Router()
 		.then(resolved=>{
 			 personalityObject['personality'] = convertPersonalityData(resolved[0]);
        personalityObject['tone'] = convertToneData(resolved[1]);
-       res.send(personalityObject)
+       Average.findOrCreate({where:{
+        user_id: req.params.id,
+        value: 'week'
+        }})
+       .then(average => {
+        average[0].update({
+          value: 'week',
+          personality: personalityObject.personality,
+          tone: personalityObject.tone
+        })
+     })
 		})
+    res.send('Complete')
 	})
 
-	.get('/:id/monthrecordings/average', (req, res, next) =>{
+	.post('/:id/monthrecordings/average', (req, res, next) =>{
 		let personalityObject = {}
 		Recording.findAll({where: {
 			 user_id: req.params.id,
@@ -243,11 +264,42 @@ module.exports = require('express').Router()
 			return sendToWatson(recordings.reduce(function(a,b){return a+b.text+" "}," "))
 		})
 		.then(resolved=>{
-			 personalityObject['personality'] = convertPersonalityData(resolved[0]);
+			  personalityObject['personality'] = convertPersonalityData(resolved[0]);
        personalityObject['tone'] = convertToneData(resolved[1]);
-       res.send(personalityObject)
-		})
-	})
+       Average.findOrCreate({where:{
+        user_id: req.params.id,
+        value: 'month'
+        }})
+       .then(average => {
+        average[0].update({
+          value: 'month',
+          personality: personalityObject.personality,
+          tone: personalityObject.tone
+        })
+     })
+    })
+    res.send('Complete')
+  })
 
+  .get('/:id/weekrecordings/average', (req, res, next) =>{
+      Average.findOne({where: {
+        user_id: req.params.id,
+        value: 'week'
+      }}).then(average=>res.send(average))
+    })
+
+  .get('/:id/monthrecordings/average', (req, res, next) =>{
+      Average.findOne({where: {
+        user_id: req.params.id,
+        value: 'month'
+      }}).then(average=>res.send(average))
+    })
+
+   .get('/:id/allrecordings/average', (req, res, next) =>{
+      Average.findOne({where: {
+        user_id: req.params.id,
+        value: 'all'
+      }}).then(average=>res.send(average))
+    })
 
 
