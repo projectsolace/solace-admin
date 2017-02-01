@@ -209,6 +209,8 @@ module.exports = require('express').Router()
 			return sendToWatson(recordings.reduce(function(a,b){return a+b.text+" "}," "))
 		})
 		.then(resolved=>{
+       personalityObject['personality'] = convertPersonalityData(resolved[0]);
+       personalityObject['tone'] = convertToneData(resolved[1]);
 			 Average.findOrCreate({where:{
         user_id: req.params.id,
         value: 'all'
