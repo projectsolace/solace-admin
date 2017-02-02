@@ -54,7 +54,7 @@ function parseOverTimeData(recordings) {
     });
 
     recordings.forEach(obj => datapersonality[i].value.push({
-      date: obj.created_at,
+      date: Date.parse(obj.created_at),
       quality: obj.personality[i].quality,
       score: obj.personality[i].score
     }));
