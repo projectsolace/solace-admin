@@ -168,7 +168,10 @@ module.exports = require('express').Router()
         $gt: new Date(new Date() - 7 * 24 * 60 * 60 * 1000)
       }
     }})
-    .then(recordings => res.send(parseOverTimeData(recordings)))
+    .then(recordings => {
+      if (recordings.length === 0) throw new Error('cannot GET - no weekly recordings yet');
+      else res.send(parseOverTimeData(recordings));
+    })
     .catch(next))
 
   .get('/:id/monthrecordings', (req, res, next) =>
@@ -178,14 +181,20 @@ module.exports = require('express').Router()
         $gt: new Date(new Date() - 30 * 24 * 60 * 60 * 1000)
       }
     }})
-    .then(recordings => res.send(parseOverTimeData(recordings)))
+    .then(recordings => {
+      if (recordings.length === 0) throw new Error('cannot GET - no monthly recordings yet');
+      else res.send(parseOverTimeData(recordings));
+    })
     .catch(next))
 
   .get('/:id/allrecordings', (req, res, next) =>
     Recording.findAll({ where: {
       user_id: req.params.id
     }})
-    .then(recordings => res.send(parseOverTimeData(recordings)))
+    .then(recordings => {
+      if (recordings.length === 0) throw new Error('cannot GET - no all time recordings yet');
+      else res.send(parseOverTimeData(recordings));
+    })
     .catch(next))
 
   .post('/:id/weekrecordings/average', (req, res, next) => {
@@ -197,7 +206,7 @@ module.exports = require('express').Router()
       }
     }})
     .then(recordings => {
-      if (recordings.length === 0) throw new Error('no weekly average recordings yet');
+      if (recordings.length === 0) throw new Error('cannot POST - no weekly average recordings yet');
       else {
         res.send('complete');
         return sendToWatson(recordings.reduce((a, b) => a + b.text + ' ', ' '))
@@ -228,7 +237,7 @@ module.exports = require('express').Router()
       }
     }})
     .then(recordings => {
-      if (recordings.length === 0) throw new Error('no monthly average recordings yet');
+      if (recordings.length === 0) throw new Error('cannot POST - no monthly average recordings yet');
       else {
         res.send('complete');
         return sendToWatson(recordings.reduce((a, b) => a + b.text + ' ', ' '))
@@ -256,7 +265,7 @@ module.exports = require('express').Router()
       user_id: req.params.id
     }})
     .then(recordings => {
-      if (recordings.length === 0) throw new Error('no all time average recordings yet');
+      if (recordings.length === 0) throw new Error('cannot POST - no all time average recordings yet');
       else {
         res.send('complete');
         return sendToWatson(recordings.reduce((a, b) => a + b.text + ' ', ' '))
@@ -283,7 +292,10 @@ module.exports = require('express').Router()
       user_id: req.params.id,
       value: 'week'
     }})
-    .then(average => res.send(average))
+    .then(average => {
+      if (average.length === 0) throw new Error()
+      res.send(average)
+    })
     .catch(next))
 
   .get('/:id/monthrecordings/average', (req, res, next) =>
