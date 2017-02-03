@@ -150,19 +150,17 @@ module.exports = require('express').Router()
     .catch(next))
 
   .get('/:id/singlerecording', (req, res, next) =>
-    Recording.findOne({ where: {
-      user_id: req.params.id,
-      created_at: {
-        $gt: new Date(new Date() - 24 * 60 * 60 * 1000)
-      }
-    }})
+    Recording.findOne({ where: { user_id: req.params.id },
+      order: [[ 'created_at', 'DESC' ]]
+    })
     .then(foundRecording => {
-      if (!foundRecording) throw new Error('cannot GET - no single recording yet');
-      res.json({
-      personality: foundRecording.personality,
-      tone: foundRecording.tone
-    })})
-    .catch(err => res.send(err.message)))
+      if (!foundRecording) res.send({});
+      else res.json({
+        personality: foundRecording.personality,
+        tone: foundRecording.tone
+      })
+    })
+    .catch(next))
 
   .get('/:id/weekrecordings', (req, res, next) =>
     Recording.findAll({ where: {
