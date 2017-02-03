@@ -1,6 +1,7 @@
 import {connect} from 'react-redux'
 import Chart from './Chart'
 import store from '../store'
+import {logout} from 'APP/app/reducers/auth'
 
 function mapStateToProps(state) {
 
@@ -9,9 +10,9 @@ function mapStateToProps(state) {
     user: state.auth
   };
 }
-function mapDispatchToProps(state) {
-  return {
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+
 const ChartContainer = connect(mapStateToProps, mapDispatchToProps)(Chart);
 export default ChartContainer;
