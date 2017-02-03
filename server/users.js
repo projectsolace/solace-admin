@@ -172,7 +172,7 @@ module.exports = require('express').Router()
       if (recordings.length === 0) throw new Error('cannot GET - no weekly recordings yet');
       else res.send(parseOverTimeData(recordings));
     })
-    .catch(next))
+    .catch(err => res.send(err.message)))
 
   .get('/:id/monthrecordings', (req, res, next) =>
     Recording.findAll({ where: {
@@ -185,7 +185,7 @@ module.exports = require('express').Router()
       if (recordings.length === 0) throw new Error('cannot GET - no monthly recordings yet');
       else res.send(parseOverTimeData(recordings));
     })
-    .catch(next))
+    .catch(err => res.send(err.message)))
 
   .get('/:id/allrecordings', (req, res, next) =>
     Recording.findAll({ where: {
@@ -195,7 +195,7 @@ module.exports = require('express').Router()
       if (recordings.length === 0) throw new Error('cannot GET - no all time recordings yet');
       else res.send(parseOverTimeData(recordings));
     })
-    .catch(next))
+    .catch(err => res.send(err.message)))
 
   .post('/:id/weekrecordings/average', (req, res, next) => {
     let personalityObject = {};
@@ -292,10 +292,7 @@ module.exports = require('express').Router()
       user_id: req.params.id,
       value: 'week'
     }})
-    .then(average => {
-      if (average.length === 0) throw new Error()
-      res.send(average)
-    })
+    .then(average => res.send(average))
     .catch(next))
 
   .get('/:id/monthrecordings/average', (req, res, next) =>
