@@ -53,8 +53,8 @@ function parseOverTimeData(recordings) {
       value: []
     });
 
-    recordings.forEach(obj => datapersonality[i].value.push({
-      date: Date.parse(obj.created_at),
+    recordings.forEach((obj, index) => datapersonality[i].value.push({
+      date: index,
       quality: obj.personality[i].quality,
       score: obj.personality[i].score
     }));
@@ -68,8 +68,8 @@ function parseOverTimeData(recordings) {
       value: []
     });
 
-    recordings.forEach(obj => datatonal[i].value.push({
-      date: obj.created_at,
+    recordings.forEach((obj, index) => datatonal[i].value.push({
+      date: index,
       quality: obj.tone[i].quality,
       score: obj.tone[i].score
     }));
