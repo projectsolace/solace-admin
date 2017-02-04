@@ -8,7 +8,7 @@ import {createStore} from 'redux'
 
 import WhoAmIContainer, {WhoAmI} from 'APP/app/components/WhoAmI'
 
-describe('<WhoAmI/>', () => {
+xdescribe('<WhoAmI/>', () => {
   const user = {
     name: 'Dr. Bones',
   }
@@ -32,7 +32,7 @@ describe('<WhoAmI/>', () => {
   })
 })
 
-describe("<WhoAmI/>'s connection", () => {
+xdescribe("<WhoAmI/>'s connection", () => {
   const state = {
     auth: {name: 'Dr. Bones'}
   }

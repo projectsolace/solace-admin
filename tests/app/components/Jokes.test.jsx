@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 
 import Jokes from 'APP/app/components/Jokes'
 
-describe('<Jokes />', () => {
+xdescribe('<Jokes />', () => {
   const joke = {
     q: 'Why did the skeleton write tests?',
     a: 'To see if she did anything bone-headed.',
