@@ -8,14 +8,11 @@ const User = require('./user');
 const Question = require('./question');
 const Recording = require('./recording');
 const Quote = require('./quote');
-const Average = require('./averageRecording')
+const Average = require('./average')
 
 User.hasMany(Recording);
 Recording.belongsTo(User);
-User.hasMany(Average)
-Average.belongsTo(User)
-
-// Question.hasMany(Recording);
-// Recording.belongsTo(Question);
+User.hasMany(Average);
+Average.belongsTo(User);
 
 module.exports = {User, Question, Recording, Quote, Average}

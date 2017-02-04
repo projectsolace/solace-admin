@@ -4,10 +4,9 @@ const Sequelize = require('sequelize')
 const db = require('APP/db')
 
 const Average = db.define('averages', {
-  value: Sequelize.TEXT,
+  value: Sequelize.STRING,
   personality: Sequelize.JSON,
-  tone: Sequelize.JSON,
-  subject: Sequelize.STRING
+  tone: Sequelize.JSON
 });
 
 module.exports = Average;
