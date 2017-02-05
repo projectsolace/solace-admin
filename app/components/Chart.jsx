@@ -4,7 +4,10 @@ import axios from 'axios'
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import {fetchReligionData, fetchOccupationData, fetchIncomeData, fetchEthnicityData, fetchEducationData, fetchMaritalData, fetchZipCodeData, fetchGenderData} from '../reducers/admin'
 import store from '../store'
-import BarChart from './BarChart'
+import BarChart from './BarChart';
+import Slider from 'react-slick';
+import { religionTypes, occupationTypes, incomeTypes, ethnicityTypes, educationTypes, maritalStatusTypes, genderTypes } from '../dataList';
+
 
 export default class Chart extends Component {
   constructor(props){
@@ -33,70 +36,65 @@ export default class Chart extends Component {
 
   }
 
+  // Not using native event, value !== event
+  onSubmitReligionHandler(value){
+    axios.get(`api/admin/religion/${value}`)
+    .then(response => {
+      this.setState({currentGraph: response.data});
+    });
+  }
 
-  onSubmitReligionHandler(event){
-    event.preventDefault()
-    axios.get(`api/admin/religion/${this.state.religion}`)
+  onSubmitOccupationHandler(value){
+     axios.get(`api/admin/occupation/${value}`)
     .then(response => {
       this.setState({currentGraph: response.data});
-    })
-    // store.dispatch(fetchReligionData(this.state.religion))
+    });
   }
-   onSubmitOccupationHandler(event){
-    event.preventDefault()
-     axios.get(`api/admin/occupation/${this.state.occupation}`)
-    .then(response => {
-      this.setState({currentGraph: response.data});
-    })
-    // store.dispatch(fetchOccupationData(this.state.occupation))
-  }
-   onSubmitIncomeHandler(event){
-    event.preventDefault()
-    axios.get(`api/admin/incomeLevel/${this.state.income}`)
-    .then(response => {
-      this.setState({currentGraph: response.data});
-    })
 
-   //store.dispatch(fetchIncomeData(this.state.income))
-  }
-   onSubmitMaritalHandler(event){
-    event.preventDefault()
-    axios.get(`api/admin/maritalStatus/${this.state.marital}`)
+  onSubmitIncomeHandler(value){
+    axios.get(`api/admin/incomeLevel/${value}`)
     .then(response => {
       this.setState({currentGraph: response.data});
-    })
-    // store.dispatch(fetchMaritalData(this.state.marital))
+    });
   }
-   onSubmitEducationHandler(event){
+
+  onSubmitMaritalHandler(value){
+    axios.get(`api/admin/maritalStatus/${value}`)
+    .then(response => {
+      this.setState({currentGraph: response.data});
+    });
+  }
+
+  onSubmitEducationHandler(event){
     event.preventDefault()
     axios.get(`api/admin/education/${this.state.education}`)
     .then(response => {
       this.setState({currentGraph: response.data});
-    })
-   //store.dispatch(fetchEducationData(this.state.education))
+    });
   }
-   onSubmitEthnicityHandler(event){
+
+  onSubmitEthnicityHandler(event){
     event.preventDefault()
     axios.get(`api/admin/ethnicity/${this.state.ethnicity}`)
     .then(response => {
       this.setState({currentGraph: response.data});
-    })
-   // store.dispatch(fetchEthnicityData(this.state.ethnicity))
+    });
   }
-   onSubmitZipHandler(event){
+
+  onSubmitZipHandler(event){
     event.preventDefault()
     axios.get(`api/admin/zipCode/${this.state.zip}`)
     .then(response => {
       this.setState({currentGraph: response.data});
-    })
-    // store.dispatch(fetchZipCodeData(this.state.zip))
+    });
   }
-   onSubmitGenderHandler(event){
+
+  onSubmitGenderHandler(event){
     event.preventDefault()
     axios.get(`api/admin/gender/${this.state.gender}`)
     .then(response => {
       this.setState({currentGraph: response.data});
-    })
+    });
     // store.dispatch(fetchGenderData(this.state.gender))
   }
 
@@ -106,6 +104,53 @@ export default class Chart extends Component {
   }
 
   render() {
+
+    const { logout, user } = this.props;
+
+    let educationList = educationTypes.map((education, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitEducationHandler(education)} >{education}</li>
+      );
+    });
+
+    let ethnicityList = ethnicityTypes.map((ethnicity, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitEthnicityHandler(ethnicity)} >{ethnicity}</li>
+      );
+    });
+
+    let religionList = religionTypes.map((religion, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitReligionHandler(religion)} >{religion}</li>
+      );
+    });
+
+    let occupationList = occupationTypes.map((occupation, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitOccupationHandler(occupation)} >{occupation}</li>
+      );
+    });
+
+    let genderList = genderTypes.map((gender, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitGenderHandler(gender)} >{gender}</li>
+      );
+    });
+
+    let incomeList = incomeTypes.map((income, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitIncomeHandler(income)} >{income}</li>
+      );
+    });
+
+    let maritalStatusList = maritalStatusTypes.map((maritalStatus, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitMaritalHandler(maritalStatus)} >{maritalStatus}</li>
+      );
+    });
+
+
+
     let personality = this.state.currentGraph.personality
     let count = 1
     let tonecount = 1
@@ -123,129 +168,112 @@ export default class Chart extends Component {
     }
     else if(this.props.user.isAdmin){
     return (
-      <div>
-      ADMIN PANEL
-    <br/>
-    <span> Religion </span>
-     <form onSubmit={this.onSubmitReligionHandler}>
-    <select onChange={(event) => this.setState({religion: event.target.value})}>
-      <option value="Protestant">Select</option>
-      <option value="Protestant">Protestant</option>
-      <option value="Catholic">Catholic</option>
-      <option value="Mormon">Mormon</option>
-      <option value="Judaism">Judaism</option>
-      <option value="Islam">Islam</option>
-      <option value="Buddhism">Buddhism</option>
-      <option value="Hinduism">Hinduism</option>
-      <option value="Other">Other</option>
-      <option value="Unaffiliated">Unaffiliated</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-      <span> Occupation </span>
-     <form onSubmit={this.onSubmitOccupationHandler}>
-    <select onChange={(event) => this.setState({occupation: event.target.value})}>
-      <option value="Sales">Select</option>
-      <option value="Sales">Sales</option>
-      <option value="Hospitality">Hospitality</option>
-      <option value="Healthcare">Healthcare</option>
-      <option value="Custodial">Custodial</option>
-      <option value="Accounting">Accounting</option>
-      <option value="Teaching">Teaching</option>
-      <option value="Law-Enforcement">Law Enforcement</option>
-      <option value="Law">Law</option>
-      <option value="Finance">Finance</option>
-      <option value="Engineering">Engineering</option>
-      <option value="Administration">Administration</option>
-      <option value="Student">Student</option>
-      <option value="Other">Other</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-     <span> Income Level </span>
-      <form onSubmit={this.onSubmitIncomeHandler}>
-    <select onChange={(event) => this.setState({income: event.target.value})}>
-      <option value="Under-$15,000">Select</option>
-      <option value="Under-$15,000">Under $15,000</option>
-      <option value="$15,000-to-$24,999">$15,000 to $24,999</option>
-      <option value="$25,000-to-$34,999">$25,000 to $34,999</option>
-      <option value="$35,000-to-$49,999">$35,000 to $49,999</option>
-      <option value="$50,000-to-$74,999">$50,000 to $74,999</option>
-      <option value="$75,000-to-$99,999">$75,000 to $99,999</option>
-      <option value="$100,000-to-$149,999">$100,000 to $149,999</option>
-      <option value="$150,000-to-$199,999">$150,000 to $199,999</option>
-      <option value="$200,000-and-over">$200,000 and over</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-       <span> Education </span>
-      <form onSubmit={this.onSubmitEducationHandler}>
-    <select onChange={(event) => this.setState({education: event.target.value})}>
-      <option value="High-School">Select</option>
-      <option value="High-School">High School</option>
-      <option value="Some-College">Some College</option>
-      <option value="Associate-Degree">Associate Degree</option>
-      <option value="Bachelor-Degree">Bachelor Degree</option>
-      <option value="Advanced-Degree">Advanced-Degree</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-     <span> Marital </span>
-      <form onSubmit={this.onSubmitMaritalHandler}>
-    <select onChange={(event) => this.setState({marital: event.target.value})}>
-      <option value="Single">Select</option>
-      <option value="Single">Single</option>
-      <option value="Married">Married</option>
-      <option value="Widowed">Widowed</option>
-      <option value="Divorced">Divorced</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-      <span> Zip </span>
-      <form onSubmit={this.onSubmitZipHandler}>
-      <input onChange={(event) => this.setState({zip: event.target.value})}/>
-      <input type='submit'/>
-      </form>
-      <br/>
-      <span> Gender </span>
-      <form onSubmit={this.onSubmitGenderHandler}>
-    <select onChange={(event) => this.setState({gender: event.target.value})}>
-      <option value="female">Select</option>
-      <option value="female">Female</option>
-      <option value="male">Male</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-     <span> Ethnicity </span>
-      <form onSubmit={this.onSubmitEthnicityHandler}>
-    <select onChange={(event) => this.setState({ethnicity: event.target.value})}>
-      <option value="White">Select</option>
-      <option value="White">White</option>
-      <option value="Black">Black</option>
-      <option value="Hispanic">Hispanic</option>
-      <option value="Asian">Asian</option>
-      <option value="American-Indian/Alaska-Native">American Indian/Alaska Native</option>
-      <option value="Hawaiian/Other-Pacific-Islander">Hawaiian/Other Pacific Islander</option>
-      <option value="Other">Other</option>
-    </select>
-    <input type='submit'/>
-    </form>
-      <br/>
-      <BarChart data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
+      <div id="wrapper">
+
+        <nav className ="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+            <div className ="navbar-header">
+                <button type="button" className ="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span className ="sr-only">Toggle navigation</span>
+                    <span className ="icon-bar"></span>
+                    <span className ="icon-bar"></span>
+                    <span className ="icon-bar"></span>
+                </button>
+                <a className ="navbar-brand" href="index.html">Solice | Dashboard</a>
+            </div>
+
+            <ul className ="nav navbar-right top-nav">
+
+                <li className ="dropdown">
+                    <a href="#" className ="dropdown-toggle" data-toggle="dropdown"><i className ="fa fa-user"></i> {user.firstName }<b className ="caret"></b></a>
+                    <ul className ="dropdown-menu">
+                        <li>
+                            <a href="#"><i className ="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li className ="divider"></li>
+                        <li>
+                            <p className="logout" onClick={logout}>Logout</p>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+
+            <div className ="collapse navbar-collapse navbar-ex1-collapse">
+                <ul className ="nav navbar-nav side-nav">
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-book"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="education" className ="collapse"> { educationList } </ul>
+                    </li>
+
+                     <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#ethnicity"><i className ="fa fa-users"></i> Ethnicity <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="ethnicity" className ="collapse"> { ethnicityList } </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#gender"><i className ="fa fa-venus-mars"></i> Gender <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="gender" className ="collapse"> { genderList } </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#income"><i className ="fa fa-money"></i> Income <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="income" className ="collapse"> { incomeList } </ul>
+                    </li>
+
+                     <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#maritalStatus"><i className ="fa fa-heartbeat"></i> Marital Status <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="maritalStatus" className ="collapse"> { maritalStatusList } </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#occupation"><i className ="fa fa-briefcase"></i> Occupation <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="occupation" className ="collapse"> { occupationList } </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#religion"><i className ="fa fa-sign-language"></i> Religion <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="religion" className ="collapse"> { religionList } </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#zip"><i className ="fa fa-address-book-o"></i> Zip Code <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <div className="row">
+                              <div className="col-md-1">
+                              </div>
+                              <div className="col-md-7">
+                                <div className="input-group">
+                                  <form id = "zip" className ="collapse" onSubmit={this.onSubmitZipHandler}>
+                                    <input className ="form-control" placeholder= "Enter zip code" onChange={(event) => this.setState({zip: event.target.value})}/>
+
+                                  </form>
+                                </div>
+                              </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+
+            <div id="page-wrapper">
+                <div className ="container-fluid">
+                    <div className ="row">
+                        <div className ="col-lg-12">
+                           <BarChart data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
       </div>
     )
   }
-  return (
-    <div>
-    PLEASE LOGIN AS AN ADMIN
-    </div>
-
+    return (
+      <div>
+      </div>
     )
   }
 }

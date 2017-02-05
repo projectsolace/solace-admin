@@ -15,7 +15,7 @@ export default class BonesJokes extends Component {
   render() {
     if(this.props.data.length) {
       return (
-        <div id='barchart'>
+        <div id='barchart' className = "admin-charts">
           <VictoryChart>
               <VictoryBar
                horizontal
@@ -117,7 +117,7 @@ export default class BonesJokes extends Component {
 }
 else{
   return (
-    <div>
+    <div className="admin-charts">
     NO GRAPH YET
     </div>
     )
