@@ -105,7 +105,7 @@ export default class Chart extends Component {
 
   render() {
 
-    const { logout } = this.props;
+    const { logout, user } = this.props;
 
     let educationList = educationTypes.map((education, i ) => {
       return (
@@ -179,13 +179,13 @@ export default class Chart extends Component {
                     <span className ="icon-bar"></span>
                     <span className ="icon-bar"></span>
                 </button>
-                <a className ="navbar-brand" href="index.html">Solice</a>
+                <a className ="navbar-brand" href="index.html">Solice | Dashboard</a>
             </div>
 
             <ul className ="nav navbar-right top-nav">
 
                 <li className ="dropdown">
-                    <a href="#" className ="dropdown-toggle" data-toggle="dropdown"><i className ="fa fa-user"></i> John Smith <b className ="caret"></b></a>
+                    <a href="#" className ="dropdown-toggle" data-toggle="dropdown"><i className ="fa fa-user"></i> {user.firstName }<b className ="caret"></b></a>
                     <ul className ="dropdown-menu">
                         <li>
                             <a href="#"><i className ="fa fa-fw fa-gear"></i> Settings</a>
@@ -201,50 +201,58 @@ export default class Chart extends Component {
 
             <div className ="collapse navbar-collapse navbar-ex1-collapse">
                 <ul className ="nav navbar-nav side-nav">
-                    <li className ="active">
-                        <a href="index.html"><i className ="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
 
                     <li>
-                        <a href="charts.html"><i className ="fa fa-fw fa-bar-chart-o"></i> Charts</a>
-                    </li>
-
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-arrows-v"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-book"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="education" className ="collapse"> { educationList } </ul>
                     </li>
 
                      <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#ethnicity"><i className ="fa fa-fw fa-arrows-v"></i> Ethnicity <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#ethnicity"><i className ="fa fa-users"></i> Ethnicity <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="ethnicity" className ="collapse"> { ethnicityList } </ul>
                     </li>
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#gender"><i className ="fa fa-fw fa-arrows-v"></i> Gender <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#gender"><i className ="fa fa-venus-mars"></i> Gender <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="gender" className ="collapse"> { genderList } </ul>
                     </li>
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#income"><i className ="fa fa-fw fa-arrows-v"></i> Income <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#income"><i className ="fa fa-money"></i> Income <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="income" className ="collapse"> { incomeList } </ul>
                     </li>
 
                      <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#maritalStatus"><i className ="fa fa-fw fa-arrows-v"></i> Marital Status <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#maritalStatus"><i className ="fa fa-heartbeat"></i> Marital Status <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="maritalStatus" className ="collapse"> { maritalStatusList } </ul>
                     </li>
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#occupation"><i className ="fa fa-fw fa-arrows-v"></i> Occupation <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#occupation"><i className ="fa fa-briefcase"></i> Occupation <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="occupation" className ="collapse"> { occupationList } </ul>
                     </li>
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#religion"><i className ="fa fa-fw fa-arrows-v"></i> Religion <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#religion"><i className ="fa fa-sign-language"></i> Religion <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="religion" className ="collapse"> { religionList } </ul>
                     </li>
 
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#zip"><i className ="fa fa-address-book-o"></i> Zip Code <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <div className="row">
+                              <div className="col-md-1">
+                              </div>
+                              <div className="col-md-7">
+                                <div className="input-group">
+                                  <form id = "zip" className ="collapse" onSubmit={this.onSubmitZipHandler}>
+                                    <input className ="form-control" placeholder= "Enter zip code" onChange={(event) => this.setState({zip: event.target.value})}/>
 
+                                  </form>
+                                </div>
+                              </div>
+                        </div>
+
+                    </li>
                 </ul>
             </div>
 
@@ -263,11 +271,9 @@ export default class Chart extends Component {
       </div>
     )
   }
-  return (
-    <div>
-    PLEASE LOGIN AS AN ADMIN
-    </div>
-
+    return (
+      <div>
+      </div>
     )
   }
 }

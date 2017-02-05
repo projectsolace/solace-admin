@@ -15,9 +15,8 @@ const ExampleApp = connect(
 ) (
   ({ user, children }) =>
     <div>
-      <nav>
-        {user ? <WhoAmI/> : <Login/>}
-      </nav>
+      {user ? <WhoAmI/> : <Login/>}
+
       {children}
     </div>
 )
