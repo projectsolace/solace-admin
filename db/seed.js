@@ -10,12 +10,14 @@ const Question = require('APP/db/models/question');
 const Quote = require('APP/db/models/quote')
 const Recording = require('APP/db/models/recording');
 
-const numUsers = 96;
+const numUsers = 96; // + 4 hardcoded real users = 100 total users
 const numRecordings = 500;
 const emails = chance.unique(chance.email, numUsers);
-const questionsJSON = require('./questionsSeed');
-const quotesJSON = require('./quotesSeed');
-const recordingsJSON = require('./recordingsSeed');
+const questionsJSON = require('./seedData/questionsSeed');
+const quotesJSON = require('./seedData/quotesSeed');
+const recordingsJSON = require('./seedData/recordingsSeed');
+const realUsers = require('./seedData/usersSeed');
+const data = require('./seedData/personalityToneSeed');
 
 function doTimes (n, fn) {
   const results = [];
@@ -44,80 +46,12 @@ function randUser () {
   });
 }
 
-const jenny = {
-  firstName: 'Jenny',
-  lastName: 'Chan',
-  isAdmin: true,
-  email: 'jenny@jenny.jenny',
-  gender: 'Female',
-  dob: '9/14/1992',
-  occupation: 'Student',
-  incomeLevel: 'Under-$15,000',
-  ethnicity: 'Asian',
-  religion: 'Buddhism',
-  education: 'Bachelor-Degree',
-  maritalStatus: 'Single',
-  zipCode: 11214,
-  password: '123'
-};
-
-const anuj = {
-  firstName: 'Anuj',
-  lastName: 'Shah',
-  isAdmin: true,
-  email: 'anuj@anuj.anuj',
-  gender: 'Male',
-  dob: '8/12/1980',
-  occupation: 'Engineering',
-  incomeLevel: '$200,000-and-over',
-  ethnicity: 'Indian',
-  religion: 'Hinduism',
-  education: 'Bachelor-Degree',
-  maritalStatus: 'Single',
-  zipCode: 10004,
-  password: '123'
-};
-
-const winston = {
-  firstName: 'Winston',
-  lastName: 'Wang',
-  isAdmin: true,
-  email: 'winston@winston.winston',
-  gender: 'Male',
-  dob: '10/14/1990',
-  occupation: 'Law',
-  incomeLevel: '$75,000-to-$99,999',
-  ethnicity: 'Asian',
-  religion: 'Other',
-  education: 'Bachelor-Degree',
-  maritalStatus: 'Single',
-  zipCode: 90210,
-  password: '123'
-};
-
-const jimmy = {
-  firstName: 'Jimmy',
-  lastName: 'Wang',
-  isAdmin: true,
-  email: 'jimmy@jimmy.jimmy',
-  gender: 'Male',
-  dob: '12/2/1990',
-  occupation: 'Accounting',
-  incomeLevel: '$50,000-to-$74,999',
-  ethnicity: 'Asian',
-  religion: 'Other',
-  education: 'Bachelor-Degree',
-  maritalStatus: 'Single',
-  zipCode: 89109,
-  password: '123'
-};
-
 function generateUsers () {
   const users = doTimes(numUsers, randUser);
-  users.push(User.build(jenny));
-  users.push(User.build(anuj));
-  users.push(User.build(winston));
-  users.push(User.build(jimmy));
+  users.push(User.build(realUsers.jenny));
+  users.push(User.build(realUsers.anuj));
+  users.push(User.build(realUsers.winston));
+  users.push(User.build(realUsers.jimmy));
   return users;
 }
 
@@ -132,70 +66,8 @@ function randRecording (createdUsers) {
   const randomText = chance.pickset(recordingsJSON, 2).reduce((a, b) => a + b.text, '');
   return Recording.build({
     text: randomText,
-    personality: [
-      {"quality":"Adventurousness","score":Math.random()},
-      {"quality":"Artistic interests","score":Math.random()},
-      {"quality":"Emotionality","score":Math.random()},
-      {"quality":"Imagination","score":Math.random()},
-      {"quality":"Intellect","score":Math.random()},
-      {"quality":"Authority-challenging","score": Math.random()},
-      {"quality":"Achievement striving","score": Math.random()},
-      {"quality":"Cautiousness","score": Math.random()},
-      {"quality":"Dutifulness","score": Math.random()},
-      {"quality":"Orderliness","score": Math.random()},
-      {"quality":"Self-discipline","score":Math.random()},
-      {"quality":"Self-efficacy","score":Math.random()},
-      {"quality":"Activity level","score":Math.random()},
-      {"quality":"Assertiveness","score":Math.random()},
-      {"quality":"Cheerfulness","score":Math.random()},
-      {"quality":"Excitement-seeking","score":Math.random()},
-      {"quality":"Outgoing","score":Math.random()},
-      {"quality":"Gregariousness","score":Math.random()},
-      {"quality":"Altruism","score":Math.random()},
-      {"quality":"Cooperation","score":Math.random()},
-      {"quality":"Modesty","score":Math.random()},
-      {"quality":"Uncompromising","score":Math.random()},
-      {"quality":"Sympathy","score":Math.random()},
-      {"quality":"Trust","score":Math.random()},
-      {"quality":"Fiery","score":Math.random()},
-      {"quality":"Prone to worry","score":Math.random()},
-      {"quality":"Melancholy","score":Math.random()},
-      {"quality":"Immoderation","score":Math.random()},
-      {"quality":"Self-consciousness","score":Math.random()},
-      {"quality":"Susceptible to stress","score":Math.random()},
-      {"quality":"Challenge","score":Math.random()},
-      {"quality":"Closeness","score":Math.random()},
-      {"quality":"Curiosity","score":Math.random()},
-      {"quality":"Excitement","score":Math.random()},
-      {"quality":"Harmony","score":Math.random()},
-      {"quality":"Ideal","score":Math.random()},
-      {"quality":"Liberty","score":Math.random()},
-      {"quality":"Love","score":Math.random()},
-      {"quality":"Practicality","score":Math.random()},
-      {"quality":"Self-expression","score":Math.random()},
-      {"quality":"Stability","score":Math.random()},
-      {"quality":"Structure","score":Math.random()},
-      {"quality":"Conservation","score":Math.random()},
-      {"quality":"Openness to change","score":Math.random()},
-      {"quality":"Hedonism","score":Math.random()},
-      {"quality":"Self-enhancement","score":Math.random()},
-      {"quality":"Self-transcendence","score":Math.random()}
-    ],
-    tone: [
-      {"quality":"Anger","score":Math.random()},
-      {"quality":"Disgust","score":Math.random()},
-      {"quality":"Fear","score":Math.random()},
-      {"quality":"Joy","score":Math.random()},
-      {"quality":"Sadness","score":Math.random()},
-      {"quality":"Analytical","score":Math.random()},
-      {"quality":"Confident","score":Math.random()},
-      {"quality":"Tentative","score":Math.random()},
-      {"quality":"Openness","score":Math.random()},
-      {"quality":"Conscientiousness","score":Math.random()},
-      {"quality":"Extraversion","score":Math.random()},
-      {"quality":"Agreeableness","score":Math.random()},
-      {"quality":"Emotional Range","score":Math.random()}
-    ],
+    personality: data.personality,
+    tone: data.tone,
     user_id: user.id,
     created_at: new Date(new Date() - 24 * 60 * 60 * 1000*Math.floor(Math.random()*60))
   });
@@ -214,7 +86,11 @@ function createRecordings (createdUsers) {
 }
 
 function seed () {
-  return Question.bulkCreate(questionsJSON)
+  return Quote.bulkCreate(quotesJSON)
+    .then(createdQuotes => {
+      console.log(chalk.yellow(`Seeded ${createdQuotes.length} quotes OK`));
+      return Question.bulkCreate(questionsJSON);
+    })
     .then(createdQuestions => {
       console.log(chalk.yellow(`Seeded ${createdQuestions.length} questions OK`));
       return createUsers();
@@ -225,9 +101,6 @@ function seed () {
     })
     .then(createdRecordings => {
       console.log(chalk.yellow(`Seeded ${createdRecordings.length} recordings OK`));
-      return Quote.bulkCreate(quotesJSON)
-    }).then(createdQuotes => {
-      console.log(chalk.yellow(`Seeded ${createdQuotes.length} quotes OK`));
     })
 }
 
@@ -235,7 +108,7 @@ function seed () {
 db.didSync
   .then(() => db.sync({force: true}))
   .then(seed)
-  .then(users => console.log(chalk.yellow('Seeded successfully!')))
+  .then(() => console.log(chalk.yellow('Seeded successfully!')))
   .catch(error => console.error(error))
   .finally(() => db.close());
 
