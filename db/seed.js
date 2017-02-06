@@ -17,7 +17,6 @@ const questionsJSON = require('./seedData/questionsSeed');
 const quotesJSON = require('./seedData/quotesSeed');
 const recordingsJSON = require('./seedData/recordingsSeed');
 const realUsers = require('./seedData/usersSeed');
-const data = require('./seedData/personalityToneSeed');
 
 function doTimes (n, fn) {
   const results = [];
@@ -66,10 +65,72 @@ function randRecording (createdUsers) {
   const randomText = chance.pickset(recordingsJSON, 2).reduce((a, b) => a + b.text, '');
   return Recording.build({
     text: randomText,
-    personality: data.personality,
-    tone: data.tone,
+    personality: [
+      { "quality": "Adventurousness", "score": Math.random() },
+      { "quality": "Artistic interests", "score": Math.random() },
+      { "quality": "Emotionality", "score": Math.random() },
+      { "quality": "Imagination", "score": Math.random() },
+      { "quality": "Intellect", "score": Math.random() },
+      { "quality": "Authority-challenging", "score": Math.random() },
+      { "quality": "Achievement striving", "score": Math.random() },
+      { "quality": "Cautiousness", "score": Math.random() },
+      { "quality": "Dutifulness", "score": Math.random() },
+      { "quality": "Orderliness", "score": Math.random() },
+      { "quality": "Self-discipline", "score": Math.random() },
+      { "quality": "Self-efficacy", "score": Math.random() },
+      { "quality": "Activity level", "score": Math.random() },
+      { "quality": "Assertiveness", "score": Math.random() },
+      { "quality": "Cheerfulness", "score": Math.random() },
+      { "quality": "Excitement-seeking", "score": Math.random() },
+      { "quality": "Outgoing", "score": Math.random() },
+      { "quality": "Gregariousness", "score": Math.random() },
+      { "quality": "Altruism", "score": Math.random() },
+      { "quality": "Cooperation", "score": Math.random() },
+      { "quality": "Modesty", "score": Math.random() },
+      { "quality": "Uncompromising", "score": Math.random() },
+      { "quality": "Sympathy", "score": Math.random() },
+      { "quality": "Trust", "score": Math.random() },
+      { "quality": "Fiery", "score": Math.random() },
+      { "quality": "Prone to worry", "score": Math.random() },
+      { "quality": "Melancholy", "score": Math.random() },
+      { "quality": "Immoderation", "score": Math.random() },
+      { "quality": "Self-consciousness", "score": Math.random() },
+      { "quality": "Susceptible to stress", "score": Math.random() },
+      { "quality": "Challenge", "score": Math.random() },
+      { "quality": "Closeness", "score": Math.random() },
+      { "quality": "Curiosity", "score": Math.random() },
+      { "quality": "Excitement", "score": Math.random() },
+      { "quality": "Harmony", "score": Math.random() },
+      { "quality": "Ideal", "score": Math.random() },
+      { "quality": "Liberty", "score": Math.random() },
+      { "quality": "Love", "score": Math.random() },
+      { "quality": "Practicality", "score": Math.random() },
+      { "quality": "Self-expression", "score": Math.random() },
+      { "quality": "Stability", "score": Math.random() },
+      { "quality": "Structure", "score": Math.random() },
+      { "quality": "Conservation", "score": Math.random() },
+      { "quality": "Openness to change", "score": Math.random() },
+      { "quality": "Hedonism", "score": Math.random() },
+      { "quality": "Self-enhancement", "score": Math.random() },
+      { "quality": "Self-transcendence", "score": Math.random() }
+    ],
+    tone: [
+      { "quality": "Anger", "score": Math.random() },
+      { "quality": "Disgust", "score": Math.random() },
+      { "quality": "Fear", "score": Math.random() },
+      { "quality": "Joy", "score": Math.random() },
+      { "quality": "Sadness", "score": Math.random() },
+      { "quality": "Analytical", "score": Math.random() },
+      { "quality": "Confident", "score": Math.random() },
+      { "quality": "Tentative", "score": Math.random() },
+      { "quality": "Openness", "score": Math.random() },
+      { "quality": "Conscientiousness", "score": Math.random() },
+      { "quality": "Extraversion", "score": Math.random() },
+      { "quality": "Agreeableness", "score": Math.random() },
+      { "quality": "Emotional Range", "score": Math.random() }
+    ],
     user_id: user.id,
-    created_at: new Date(new Date() - 24 * 60 * 60 * 1000*Math.floor(Math.random()*60))
+    created_at: new Date(new Date() - 24 * 60 * 60 * 1000*Math.floor(Math.random() * 60))
   });
 }
 
@@ -111,4 +172,3 @@ db.didSync
   .then(() => console.log(chalk.yellow('Seeded successfully!')))
   .catch(error => console.error(error))
   .finally(() => db.close());
-
