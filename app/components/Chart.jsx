@@ -70,29 +70,29 @@ export default class Chart extends Component {
     });
   }
 
-  onSubmitEducationHandler(event){
-    axios.get(`api/admin/education/${this.state.education}`)
+  onSubmitEducationHandler(value){
+    axios.get(`api/admin/education/${value}`)
     .then(response => {
       this.setState({currentGraph: response.data});
     });
   }
 
-  onSubmitEthnicityHandler(event){
-    axios.get(`api/admin/ethnicity/${this.state.ethnicity}`)
+  onSubmitEthnicityHandler(value){
+    axios.get(`api/admin/ethnicity/${value}`)
     .then(response => {
       this.setState({currentGraph: response.data});
     });
   }
 
-  onSubmitZipHandler(event){
-    axios.get(`api/admin/zipCode/${this.state.zip}`)
+  onSubmitZipHandler(value){
+    axios.get(`api/admin/zipCode/${value}`)
     .then(response => {
       this.setState({currentGraph: response.data});
     });
   }
 
-  onSubmitGenderHandler(event){
-    axios.get(`api/admin/gender/${this.state.gender}`)
+  onSubmitGenderHandler(value){
+    axios.get(`api/admin/gender/${value}`)
     .then(response => {
       this.setState({currentGraph: response.data});
     });
