@@ -10,7 +10,7 @@ const Question = require('APP/db/models/question');
 const Quote = require('APP/db/models/quote')
 const Recording = require('APP/db/models/recording');
 
-const numUsers = 96; // + 4 hardcoded real users = 100 total users
+const numUsers = 196; // + 4 hardcoded real users = 200 total users
 const numRecordings = 500;
 const emails = chance.unique(chance.email, numUsers);
 const questionsJSON = require('./seedData/questionsSeed');
@@ -61,7 +61,7 @@ function createUsers () {
 }
 
 function randRecording (createdUsers) {
-  const user = chance.weighted(createdUsers, [...Array(96).fill(0.625), 10, 10, 10, 10]);
+  const user = chance.weighted(createdUsers, [...Array(196).fill(0.4), 10.8, 10.8, 0, 0]);
   const randomText = chance.pickset(recordingsJSON, 2).reduce((a, b) => a + b.text, '');
   return Recording.build({
     text: randomText,
