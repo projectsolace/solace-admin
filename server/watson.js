@@ -3,10 +3,9 @@ const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insigh
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const fs = require('fs');
 const request = require('request')
-
 const db = require('../db');
 const Recording = db.model('recordings');
-const { convertText, convertPersonalityData, convertToneData } = require('./utils')
+const { convertText, convertPersonalityData, convertToneData, sendToWatson } = require('./utils')
 
 module.exports = require('express').Router()
   // Speech to text to Watson API
@@ -48,7 +47,8 @@ module.exports = require('express').Router()
               }, (err, response) => {
                 if (err) {
                 console.log(err);
-                recording.destroy().then(res.send('Recording Did Not Save'))
+                recording.destroy()
+                .then(() => res.send('Recording Did Not Save'))
                }
                 else {
                   response = convertPersonalityData(response);
@@ -78,5 +78,37 @@ module.exports = require('express').Router()
         }
       })
     })
+  })
 
+  // Text to Watson API
+  .post('/write', (req, res, next) => {
+    if (req.body.text.length < 1000) res.status(204).send('text too short - could not send to Watson')
+
+    let personalityObject = {};
+    let recordingId;
+
+    Recording.create({
+      text: req.body.text,
+      user_id: req.body.userID
+    })
+    .then(recording => {
+      recordingId = recording.id;
+      return sendToWatson(recording.text);
+    })
+    .then(resolved => {
+      personalityObject['personality'] = convertPersonalityData(resolved[0]);
+      personalityObject['tone'] = convertToneData(resolved[1]);
+
+      Recording.update({
+        personality: personalityObject['personality'],
+        tone: personalityObject['tone']
+      }, {
+        where: { id: recordingId },
+        returning: true
+      })
+      .then(([amountofUpdatedRecording, arrayofUpdatedRecordings]) => {
+        res.send(arrayofUpdatedRecordings[0])
+      })
+      .catch(next)
+    })
   })
