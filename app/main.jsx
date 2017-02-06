@@ -14,7 +14,7 @@ const ExampleApp = connect(
   ({ auth }) => ({ user: auth })
 ) (
   ({ user, children }) =>
-    <div>
+    <div >
       {user ? <WhoAmI/> : <Login/>}
 
       {children}

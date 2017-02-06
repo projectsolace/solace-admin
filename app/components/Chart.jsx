@@ -22,7 +22,8 @@ export default class Chart extends Component {
       zip:"",
       gender:"",
       currentGraph:{personality:[], tone:[]},
-      loadingClass:"loader"
+      loadingClass:"hidden",
+      chartContainer: "none"
     }
 
     this.onSubmitReligionHandler = this.onSubmitReligionHandler.bind(this)
@@ -36,65 +37,68 @@ export default class Chart extends Component {
 
   }
 
-   Loader() {<div className="loader">Loading...</div>}
-
-
   // Not using native event, value !== event
   onSubmitReligionHandler(value){
+    this.setState({loadingClass: "la-pacman", chartContainer: "hidden"})
     axios.get(`api/admin/religion/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none", chartContainer: "none", currentGraph: response.data});
     });
   }
 
   onSubmitOccupationHandler(value){
+    this.setState({loadingClass: "la-pacman"})
      axios.get(`api/admin/occupation/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none", currentGraph: response.data});
     });
   }
 
   onSubmitIncomeHandler(value){
-    console.log('here begin')
+    this.setState({loadingClass: "la-pacman"})
     axios.get(`api/admin/incomeLevel/${value}`)
     .then(response => {
-      console.log('here end')
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none", currentGraph: response.data});
     });
   }
 
   onSubmitMaritalHandler(value){
+    this.setState({loadingClass: "la-pacman"})
     axios.get(`api/admin/maritalStatus/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none", currentGraph: response.data});
     });
   }
 
   onSubmitEducationHandler(value){
+    this.setState({loadingClass: "la-pacman"})
     axios.get(`api/admin/education/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none", currentGraph: response.data});
     });
   }
 
   onSubmitEthnicityHandler(value){
+    this.setState({loadingClass: "la-pacman"})
     axios.get(`api/admin/ethnicity/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none",currentGraph: response.data});
     });
   }
 
   onSubmitZipHandler(value){
+    this.setState({loadingClass: "la-pacman"})
     axios.get(`api/admin/zipCode/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none",currentGraph: response.data});
     });
   }
 
   onSubmitGenderHandler(value){
+    this.setState({loadingClass: "la-pacman"})
     axios.get(`api/admin/gender/${value}`)
     .then(response => {
-      this.setState({currentGraph: response.data});
+      this.setState({loadingClass: "none",currentGraph: response.data});
     });
     // store.dispatch(fetchGenderData(this.state.gender))
   }
@@ -204,7 +208,7 @@ export default class Chart extends Component {
                 <ul className ="nav navbar-nav side-nav">
 
                     <li>
-                        <a className ="active" href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-book"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-book"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="education" className ="collapse"> { educationList } </ul>
                     </li>
 
@@ -259,12 +263,25 @@ export default class Chart extends Component {
 
         </nav>
 
-            <div id="page-wrapper">
+            <div id="page-wrapper" >
                 <div className ="container-fluid">
                     <div className ="row">
                         <div className ="col-lg-12">
-                            <div className={this.state.loadingClass}> Loading...</div>
-                           <BarChart data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
+                          {/* Pacman loading screen */}
+                          <div className='loaderContainer'>
+                            {/* These empty divs are for packman animation */}
+                              <div className={this.state.loadingClass}>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                                  <div></div>
+                              </div>
+                          </div>
+
+                        </div>
+                        <div className={this.state.chartContainer}>
+                         <BarChart  data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
                         </div>
                     </div>
                 </div>
