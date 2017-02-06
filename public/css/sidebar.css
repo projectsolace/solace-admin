@@ -19,7 +19,7 @@ body {
 
 .admin-charts {
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 @media(min-width:768px) {
@@ -159,6 +159,10 @@ ul.alert-dropdown {
     padding: 10px 15px 10px 38px;
     text-decoration: none;
     color: #999;
+}
+
+.side-nav>li>ul>li.highlighted {
+    background-color: #000
 }
 
 .side-nav>li>ul>li.chartOption:hover {

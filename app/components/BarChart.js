@@ -119,6 +119,7 @@ else{
   return (
     <div className="admin-charts">
     NO GRAPH YET
+
     </div>
     )
 }

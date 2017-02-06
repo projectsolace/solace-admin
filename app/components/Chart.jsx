@@ -21,8 +21,8 @@ export default class Chart extends Component {
       ethnicity:"",
       zip:"",
       gender:"",
-      currentGraph:{personality:[], tone:[]}
-
+      currentGraph:{personality:[], tone:[]},
+      loadingClass:"loader"
     }
 
     this.onSubmitReligionHandler = this.onSubmitReligionHandler.bind(this)
@@ -35,6 +35,9 @@ export default class Chart extends Component {
     this.onSubmitGenderHandler = this.onSubmitGenderHandler.bind(this)
 
   }
+
+   Loader() {<div className="loader">Loading...</div>}
+
 
   // Not using native event, value !== event
   onSubmitReligionHandler(value){
@@ -52,8 +55,10 @@ export default class Chart extends Component {
   }
 
   onSubmitIncomeHandler(value){
+    console.log('here begin')
     axios.get(`api/admin/incomeLevel/${value}`)
     .then(response => {
+      console.log('here end')
       this.setState({currentGraph: response.data});
     });
   }
@@ -66,7 +71,6 @@ export default class Chart extends Component {
   }
 
   onSubmitEducationHandler(event){
-    event.preventDefault()
     axios.get(`api/admin/education/${this.state.education}`)
     .then(response => {
       this.setState({currentGraph: response.data});
@@ -74,7 +78,6 @@ export default class Chart extends Component {
   }
 
   onSubmitEthnicityHandler(event){
-    event.preventDefault()
     axios.get(`api/admin/ethnicity/${this.state.ethnicity}`)
     .then(response => {
       this.setState({currentGraph: response.data});
@@ -82,7 +85,6 @@ export default class Chart extends Component {
   }
 
   onSubmitZipHandler(event){
-    event.preventDefault()
     axios.get(`api/admin/zipCode/${this.state.zip}`)
     .then(response => {
       this.setState({currentGraph: response.data});
@@ -90,7 +92,6 @@ export default class Chart extends Component {
   }
 
   onSubmitGenderHandler(event){
-    event.preventDefault()
     axios.get(`api/admin/gender/${this.state.gender}`)
     .then(response => {
       this.setState({currentGraph: response.data});
@@ -203,7 +204,7 @@ export default class Chart extends Component {
                 <ul className ="nav navbar-nav side-nav">
 
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-book"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
+                        <a className ="active" href="javascript:;" data-toggle="collapse" data-target="#education"><i className ="fa fa-fw fa-book"></i> Education <i className ="fa fa-fw fa-caret-down"></i></a>
                         <ul id="education" className ="collapse"> { educationList } </ul>
                     </li>
 
@@ -262,6 +263,7 @@ export default class Chart extends Component {
                 <div className ="container-fluid">
                     <div className ="row">
                         <div className ="col-lg-12">
+                            <div className={this.state.loadingClass}> Loading...</div>
                            <BarChart data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
                         </div>
                     </div>
