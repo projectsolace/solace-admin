@@ -23,6 +23,7 @@ module.exports = require('express').Router()
   //   .then(user => res.json(user))
   //   .catch(next))
 
+  // Updates a user's profile info
   .put('/:id', (req, res, next) =>
     User.update(req.body, { where: { id: +req.params.id },
       returning: true
@@ -32,6 +33,7 @@ module.exports = require('express').Router()
     })
     .catch(next))
 
+  // Finds the latest recording of a user
   .get('/:id/singlerecording', (req, res, next) =>
     Recording.findOne({ where: { user_id: req.params.id },
       order: [[ 'created_at', 'DESC' ]]
@@ -45,6 +47,7 @@ module.exports = require('express').Router()
     })
     .catch(next))
 
+  // Finds the last 7 days' recordings of a user
   .get('/:id/weekrecordings', (req, res, next) =>
     Recording.findAll({ where: {
       user_id: req.params.id,
@@ -58,6 +61,7 @@ module.exports = require('express').Router()
     })
     .catch(err => res.send(err.message)))
 
+  // Finds the last 30 days' recordings of a user
   .get('/:id/monthrecordings', (req, res, next) =>
     Recording.findAll({ where: {
       user_id: req.params.id,
@@ -71,6 +75,7 @@ module.exports = require('express').Router()
     })
     .catch(err => res.send(err.message)))
 
+  // Finds all recordings of a user
   .get('/:id/allrecordings', (req, res, next) =>
     Recording.findAll({ where: {
       user_id: req.params.id
@@ -81,6 +86,7 @@ module.exports = require('express').Router()
     })
     .catch(err => res.send(err.message)))
 
+  // Aggregates the last 7 days' recordings of a user, sends the text to Watson API, and posts the data results to Average Model
   .post('/:id/weekrecordings/average', (req, res, next) => {
     let personalityObject = {};
     Recording.findAll({ where: {
@@ -112,6 +118,7 @@ module.exports = require('express').Router()
     .catch(err => res.status(500).send(err.message));
   })
 
+  // Aggregates the last 30 days' recordings of a user, sends the text to Watson API, and posts the data results to Average Model
   .post('/:id/monthrecordings/average', (req, res, next) => {
     let personalityObject = {};
     Recording.findAll({ where: {
@@ -143,6 +150,7 @@ module.exports = require('express').Router()
     .catch(err => res.status(500).send(err.message));
   })
 
+  // Aggregates all recordings of a user, sends the text to Watson API, and posts the data results to Average Model
   .post('/:id/allrecordings/average', (req, res, next) => {
     let personalityObject = {};
     Recording.findAll({ where: {
@@ -171,6 +179,7 @@ module.exports = require('express').Router()
     .catch(err => res.status(500).send(err.message));
   })
 
+  // Finds the average data of the last 7 days' recordings of a user
   .get('/:id/weekrecordings/average', (req, res, next) =>
     Average.findOne({ where: {
       user_id: req.params.id,
@@ -179,6 +188,7 @@ module.exports = require('express').Router()
     .then(average => res.send(average))
     .catch(next))
 
+  // Finds the average data of the last 30 days' recordings of a user
   .get('/:id/monthrecordings/average', (req, res, next) =>
     Average.findOne({ where: {
       user_id: req.params.id,
@@ -187,6 +197,7 @@ module.exports = require('express').Router()
     .then(average => res.send(average))
     .catch(next))
 
+  // Finds the average data of all recordings of a user
   .get('/:id/allrecordings/average', (req, res, next) =>
     Average.findOne({ where: {
       user_id: req.params.id,
