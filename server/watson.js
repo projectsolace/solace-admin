@@ -46,7 +46,10 @@ module.exports = require('express').Router()
                 text: recording.text,
                 consumption_preferences: true
               }, (err, response) => {
-                if (err) console.log(err);
+                if (err) {
+                console.log(err);
+                recording.destroy().then(res.send('Recording Did Not Save'))
+               }
                 else {
                   response = convertPersonalityData(response);
                   recording.update({ personality: response })
