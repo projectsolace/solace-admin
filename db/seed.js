@@ -62,7 +62,7 @@ function createUsers () {
 }
 
 function randRecording (createdUsers) {
-  const user = chance.weighted(createdUsers, [...Array(96).fill(0.8), 5.8, 5.8, 5.8, 5.8]);
+  const user = chance.weighted(createdUsers, [...Array(96).fill(0.625), 10, 10, 10, 10]);
   const randomText = chance.pickset(recordingsJSON, 2).reduce((a, b) => a + b.text, '');
   return Recording.build({
     text: randomText,
