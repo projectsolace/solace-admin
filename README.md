@@ -1,6 +1,6 @@
-# watson-backend
+# solace-admin
 
-Backend server live at http://watson-backend.herokuapp.com/
+Backend server live at https://solace-admin.herokuapp.com
 
 ### Goal for MVP
 - React Native mobile app running
@@ -37,7 +37,7 @@ Backend server live at http://watson-backend.herokuapp.com/
 ### Instructions for building and using the project
 - Backend:
 ```
-$ git clone https://github.com/jennyrchan/watson-backend
+$ git clone https://github.com/jennyrchan/solace-admin.git
 $ cd watson-backend
 $ npm install
 $ npm run seed
@@ -52,7 +52,7 @@ $ npm start
 
 - React Native:
 ```
-$ git clone https://github.com/jawang12/watson-react-native
+$ git clone https://github.com/jawang12/solace-react-native.git
 $ cd watson-react-native
 $ npm install
 $ react-native run-ios
