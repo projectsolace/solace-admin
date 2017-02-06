@@ -180,7 +180,7 @@ export default class Chart extends Component {
                     <span className ="icon-bar"></span>
                     <span className ="icon-bar"></span>
                 </button>
-                <a className ="navbar-brand" href="index.html">Solice | Dashboard</a>
+                <a className ="navbar-brand" href="index.html">Solace | Dashboard</a>
             </div>
 
             <ul className ="nav navbar-right top-nav">
