@@ -16,6 +16,7 @@ export default class BonesJokes extends Component {
     if(this.props.data.length) {
       return (
         <div id='barchart' >
+        <VictoryChart theme={VictoryTheme.material}>
                 <VictoryAxis
                    tickValues={[0,20,40,60,80,100]}
                    style={{
