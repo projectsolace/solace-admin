@@ -208,4 +208,6 @@ ul.alert-dropdown {
 
 #barchart > svg {
     margin-top: -10%;
+    margin-left: -5%;
+
 }
