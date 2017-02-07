@@ -23,7 +23,7 @@ export default class Chart extends Component {
       zip:"",
       gender:"",
       currentGraph:{personality:[], tone:[]},
-      chartHeading:"Select sidebar to view data",
+      chartHeading:"Please Select A Demographic To View Data",
       chartSubHeading: "",
       loadingClass:"hidden",
       chartContainer: "none"
@@ -249,7 +249,7 @@ export default class Chart extends Component {
 
                         </div>
                         <div className={this.state.chartContainer}>
-                          <div id="chartHeading">{this.state.chartHeading}: {this.state.chartSubHeading }</div>
+                          <div id="chartHeading">{this.state.chartHeading} {this.state.chartSubHeading }</div>
                          <BarChart  data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
                         </div>
                     </div>
