@@ -47,7 +47,7 @@ export default class Chart extends Component {
 
   onSubmitZipHandler(event){
     event.preventDefault();
-    this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: "Zip Code", chartSubHeading: this.state.zip});
+    this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: "Zip Code : ", chartSubHeading: this.state.zip});
     axios.get(`api/admin/zipCode/${this.state.zip}`)
     .then(response => {
       this.setState({loadingClass: "none", chartContainer: "none", currentGraph: response.data});
@@ -56,7 +56,7 @@ export default class Chart extends Component {
 
   onDemographicHandler(demographic, demoCategory){
     let demographicStr = this.convertDemographicStr(demographic);
-    this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: `${demographicStr}`, chartSubHeading: demoCategory});
+    this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: `${demographicStr} : `, chartSubHeading: demoCategory});
     axios.get(`api/admin/${demographic}/${demoCategory}`)
     .then(response => {
       this.setState({loadingClass: "none", chartContainer: "none", currentGraph: response.data});
@@ -249,7 +249,7 @@ export default class Chart extends Component {
 
                         </div>
                         <div className={this.state.chartContainer}>
-                          <div id="chartHeading">{this.state.chartHeading} {this.state.chartSubHeading }</div>
+                          <div id="chartHeading">{this.state.chartHeading}{this.state.chartSubHeading }</div>
                          <BarChart  data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
                         </div>
                     </div>
