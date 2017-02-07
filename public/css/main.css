@@ -147,7 +147,7 @@ ul.alert-dropdown {
     }
 
     .side-nav li .chartOption:hover,
-    .side-nav li .chartOption:focus {
+    .side-nav li .chartOption:active{
         outline: none;
         background-color: #000 !important;
     }
@@ -162,10 +162,6 @@ ul.alert-dropdown {
     padding: 10px 15px 10px 38px;
     text-decoration: none;
     color: #999;
-}
-
-.side-nav>li>ul>li.highlighted {
-    background-color: #000
 }
 
 .side-nav>li>ul>li.chartOption:hover {
@@ -196,4 +192,20 @@ ul.alert-dropdown {
     position: absolute;
 }
 
+#chartHeading {
+    text-align: center;
+    margin-top: 5%;
+    color: white;
+    font-size: 2.1em;
+    font-family: 'Roboto', sans-serif;
+}
 
+.victoryTitle {
+    text-align: center;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+#barchart > svg {
+    margin-top: -10%;
+}

@@ -12,6 +12,7 @@ import { religionTypes, occupationTypes, incomeTypes, ethnicityTypes, educationT
 export default class Chart extends Component {
   constructor(props){
     super(props);
+     { /* loadingClass and chartContainer variable to toggle packman animation */ }
     this.state = {
       religion: "",
       occupation:"",
@@ -22,87 +23,55 @@ export default class Chart extends Component {
       zip:"",
       gender:"",
       currentGraph:{personality:[], tone:[]},
+      chartHeading:"Please Select A Demographic To View Data",
+      chartSubHeading: "",
       loadingClass:"hidden",
       chartContainer: "none"
-    }
+    };
 
-    this.onSubmitReligionHandler = this.onSubmitReligionHandler.bind(this)
-    this.onSubmitOccupationHandler = this.onSubmitOccupationHandler.bind(this)
-    this.onSubmitIncomeHandler = this.onSubmitIncomeHandler.bind(this)
-    this.onSubmitMaritalHandler = this.onSubmitMaritalHandler.bind(this)
-    this.onSubmitEducationHandler = this.onSubmitEducationHandler.bind(this)
-    this.onSubmitEthnicityHandler = this.onSubmitEthnicityHandler.bind(this)
-    this.onSubmitZipHandler = this.onSubmitZipHandler.bind(this)
-    this.onSubmitGenderHandler = this.onSubmitGenderHandler.bind(this)
+    // this.onSubmitReligionHandler = this.onSubmitReligionHandler.bind(this)
+    this.onSubmitZipHandler = this.onSubmitZipHandler.bind(this);
+    this.onDemographicHandler = this.onDemographicHandler.bind(this);
+    this.convertDemographicStr = this.convertDemographicStr.bind(this);
 
   }
 
-  // Not using native event, value !== event
-  onSubmitReligionHandler(value){
-    this.setState({loadingClass: "la-pacman", chartContainer: "hidden"})
-    axios.get(`api/admin/religion/${value}`)
+  // Saved this code for future reference. How api call looks like
+  // onSubmitReligionHandler(value){
+  //   this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: "Religion", chartSubHeading: `${value}`})
+  //   axios.get(`api/admin/religion/${value}`)
+  //   .then(response => {
+  //     this.setState({loadingClass: "none", currentGraph: response.data});
+  //   });
+  // }
+
+  onSubmitZipHandler(event){
+    event.preventDefault();
+    this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: "Zip Code : ", chartSubHeading: this.state.zip});
+    axios.get(`api/admin/zipCode/${this.state.zip}`)
     .then(response => {
       this.setState({loadingClass: "none", chartContainer: "none", currentGraph: response.data});
     });
   }
 
-  onSubmitOccupationHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-     axios.get(`api/admin/occupation/${value}`)
+  onDemographicHandler(demographic, demoCategory){
+    let demographicStr = this.convertDemographicStr(demographic);
+    this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: `${demographicStr} : `, chartSubHeading: demoCategory});
+    axios.get(`api/admin/${demographic}/${demoCategory}`)
     .then(response => {
-      this.setState({loadingClass: "none", currentGraph: response.data});
+      this.setState({loadingClass: "none", chartContainer: "none", currentGraph: response.data});
     });
   }
 
-  onSubmitIncomeHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-    axios.get(`api/admin/incomeLevel/${value}`)
-    .then(response => {
-      this.setState({loadingClass: "none", currentGraph: response.data});
-    });
+  convertDemographicStr(demoStr) {
+    if(demoStr === "incomelevel"){
+      return "Income Level";
+    } else if (demoStr === "maritalStatus") {
+      return "Marital Status";
+    } else {
+      return  demoStr.charAt(0).toUpperCase() + demoStr.slice(1);
+    }
   }
-
-  onSubmitMaritalHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-    axios.get(`api/admin/maritalStatus/${value}`)
-    .then(response => {
-      this.setState({loadingClass: "none", currentGraph: response.data});
-    });
-  }
-
-  onSubmitEducationHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-    axios.get(`api/admin/education/${value}`)
-    .then(response => {
-      this.setState({loadingClass: "none", currentGraph: response.data});
-    });
-  }
-
-  onSubmitEthnicityHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-    axios.get(`api/admin/ethnicity/${value}`)
-    .then(response => {
-      this.setState({loadingClass: "none",currentGraph: response.data});
-    });
-  }
-
-  onSubmitZipHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-    axios.get(`api/admin/zipCode/${value}`)
-    .then(response => {
-      this.setState({loadingClass: "none",currentGraph: response.data});
-    });
-  }
-
-  onSubmitGenderHandler(value){
-    this.setState({loadingClass: "la-pacman"})
-    axios.get(`api/admin/gender/${value}`)
-    .then(response => {
-      this.setState({loadingClass: "none",currentGraph: response.data});
-    });
-    // store.dispatch(fetchGenderData(this.state.gender))
-  }
-
 
   componentDidMount() {
 
@@ -112,49 +81,48 @@ export default class Chart extends Component {
 
     const { logout, user } = this.props;
 
-    let educationList = educationTypes.map((education, i ) => {
+    const incomeList = incomeTypes.map((incomeCategory, i ) => {
       return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitEducationHandler(education)} >{education}</li>
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("incomelevel", incomeCategory)} > {incomeCategory} </li>
       );
     });
 
-    let ethnicityList = ethnicityTypes.map((ethnicity, i ) => {
+    const educationList = educationTypes.map((educationCategory, i ) => {
       return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitEthnicityHandler(ethnicity)} >{ethnicity}</li>
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("education", educationCategory)} >{educationCategory}</li>
       );
     });
 
-    let religionList = religionTypes.map((religion, i ) => {
+    const ethnicityList = ethnicityTypes.map((ethnicityCategory, i ) => {
       return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitReligionHandler(religion)} >{religion}</li>
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("ethnicity", ethnicityCategory)} >{ethnicityCategory}</li>
       );
     });
 
-    let occupationList = occupationTypes.map((occupation, i ) => {
+    const religionList = religionTypes.map((religionCategory, i ) => {
       return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitOccupationHandler(occupation)} >{occupation}</li>
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("religion", religionCategory )} >{religionCategory}</li>
       );
     });
 
-    let genderList = genderTypes.map((gender, i ) => {
+    const occupationList = occupationTypes.map((occupationCategory, i ) => {
       return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitGenderHandler(gender)} >{gender}</li>
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("occupation", occupationCategory)} >{occupationCategory}</li>
       );
     });
 
-    let incomeList = incomeTypes.map((income, i ) => {
+    const genderList = genderTypes.map((genderCategory, i ) => {
       return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitIncomeHandler(income)} >{income}</li>
-      );
-    });
-
-    let maritalStatusList = maritalStatusTypes.map((maritalStatus, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onSubmitMaritalHandler(maritalStatus)} >{maritalStatus}</li>
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("gender", genderCategory)} >{genderCategory}</li>
       );
     });
 
 
+    const maritalStatusList = maritalStatusTypes.map((maritalStatusCategory, i ) => {
+      return (
+         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("maritalStatus", maritalStatusCategory)} >{maritalStatusCategory}</li>
+      );
+    });
 
     let personality = this.state.currentGraph.personality
     let count = 1
@@ -281,6 +249,7 @@ export default class Chart extends Component {
 
                         </div>
                         <div className={this.state.chartContainer}>
+                          <div id="chartHeading">{this.state.chartHeading}{this.state.chartSubHeading }</div>
                          <BarChart  data={data} labels={labels} tonaldata={tonaldata} tonelabels={tonelabels}/>
                         </div>
                     </div>
