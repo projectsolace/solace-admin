@@ -15,8 +15,11 @@ export default class BonesJokes extends Component {
   render() {
     if(this.props.data.length) {
       return (
+      <div>
         <div id='barchart' >
-        <VictoryChart theme={VictoryTheme.material}>
+           <h3 className="victoryTitle">Personality Insights I</h3>
+            <VictoryChart className="victoryChart" theme={VictoryTheme.material}>
+
                 <VictoryAxis
                    tickValues={[0,20,40,60,80,100]}
                    style={{
@@ -48,8 +51,12 @@ export default class BonesJokes extends Component {
                     }}
                    data={this.props.data.slice(35, 47)}
                  />
-               </VictoryChart>
-               <VictoryChart theme={VictoryTheme.material}>
+            </VictoryChart>
+        </div>
+        <div id='barchart' >
+           <h3 className="victoryTitle">Personality Insights II</h3>
+            <VictoryChart theme={VictoryTheme.material}>
+
                 <VictoryAxis
                    tickValues={[0,20,40,60,80,100]}
                    style={{
@@ -81,8 +88,11 @@ export default class BonesJokes extends Component {
                     }}
                    data={this.props.data.slice(24, 35)}
                  />
-               </VictoryChart>
-               <VictoryChart theme={VictoryTheme.material}>
+            </VictoryChart>
+        </div>
+        <div id='barchart' >
+            <h3 className="victoryTitle">Personality Insights III</h3>
+            <VictoryChart theme={VictoryTheme.material}>
                 <VictoryAxis
                    tickValues={[0,20,40,60,80,100]}
                    style={{
@@ -114,8 +124,11 @@ export default class BonesJokes extends Component {
                    }}
                    data={this.props.data.slice(12, 24)}
                  />
-               </VictoryChart>
-               <VictoryChart theme={VictoryTheme.material}>
+              </VictoryChart>
+        </div>
+        <div id='barchart' >
+              <h3 className="victoryTitle">Personality Insights IV</h3>
+              <VictoryChart theme={VictoryTheme.material}>
                  <VictoryAxis
                    tickValues={[0,20,40,60,80,100]}
                    style={{
@@ -147,8 +160,11 @@ export default class BonesJokes extends Component {
                    }}
                    data={this.props.data.slice(0, 12)}
                  />
-               </VictoryChart>
-               <VictoryChart theme={VictoryTheme.material}>
+              </VictoryChart>
+        </div>
+        <div id='barchart' >
+              <h3 className="victoryTitle">Personality Insights V</h3>
+              <VictoryChart theme={VictoryTheme.material}>
                 <VictoryAxis
                    tickValues={[0,20,40,60,80,100]}
                    style={{
@@ -180,8 +196,10 @@ export default class BonesJokes extends Component {
                    }}
                    data={this.props.tonaldata}
                  />
-               </VictoryChart>
+              </VictoryChart>
+        </div>
       </div>
+
     )
 
 }

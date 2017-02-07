@@ -193,12 +193,19 @@ ul.alert-dropdown {
 }
 
 #chartHeading {
-    margin-left: 30%;
+    text-align: center;
     margin-top: 5%;
     color: white;
-    font-size: 2em
+    font-size: 2.1em;
+    font-family: 'Roboto', sans-serif;
 }
 
-#barchart {
-   /* margin-top: -10%;*/
+.victoryTitle {
+    text-align: center;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+#barchart > svg {
+    margin-top: -10%;
 }
