@@ -1,59 +1,136 @@
-# solace-admin
+# Solace
+  
+Solace is a mental wellness mobile app that utilizes IBM Watson's Personality/Emotional Insights API to help users observe their own mental and emotional processes over time. Each day, users are encouraged to share their thoughts and feelings with Solace by simply speaking to the app. Solace will then analyze the recordings and output a visual representation of the user's personality and emotional insights. Users will have the ability to track not only their most recent statistics but also be able to check their progress over time.
+  
+The deployed Admin Panel/Backend server is located at:
+  
+https://solace-admin.herokuapp.com/
 
-Backend server live at https://solace-admin.herokuapp.com
+To login and see our test data render for different demographics you can login with:
+  
+Username: anuj@anuj.anuj  
+PW: 123  
 
-### Goal for MVP
-- React Native mobile app running
-- Backend server deployed on Heroku
-- User experience so far:
-  - User can log in or sign up as a new user (posts to remote database)
-  - User is given a random question to answer
-  - User records answer, which is transcribed to text and sent to Watson API
-  - User gets back data that is rendered on some chart/graph
+  
+The client-side github is located at:
+  
+https://github.com/jawang12/solace-react-native
 
-### Which parts work
-- Backend:
-  - Call to Watson API returns the data we want
-  - Data returns and we can render some of it into a rough bar graph
-- React Native:
-  - Sign up works and persists to remote database
-  - Login, Signup, Homepage components rendering
-  - Press record and it will save a hidden file on front end
-
-### Which parts don't work
-- Login authentication does not work (Passport doesn't work with React Native maybe?)
-- Recording on front end cannot be accessed from the back end (and thus cannot make the call to Watson API)
-
-### Open/unresolved questions
-- Should we change our authentication strategy or continue using Bones?
-- How can we get the recording from front end to back end?
-
-### Particular parts of the code we would like you to look at
-- Backend:
-  - Authentication boilerplate route (server/auth.js)
-- React Native:
-  - src/native/reducer/UserReducer.native.js
-
-### Instructions for building and using the project
-- Backend:
+  
+  
+## Getting Started
+  
+Follow these steps to get the app or the backend running on your machine
+  
+  
+  
+### Prerequisites
+  
+This guide assumes that you have Node (and npm) and PostgreSQL installed for the backend. 
+  
+For the client-side you will need XCode installed. 
+  
+If you don't, you can get them here: 
+  
+https://nodejs.org
+  
+https://www.postgresql.org/
+  
+https://developer.apple.com/xcode/downloads/
+  
+  
+  
+### Installing Backend
+  
 ```
-$ git clone https://github.com/jennyrchan/solace-admin.git
-$ cd watson-backend
-$ npm install
-$ npm run seed
-$ npm run build-watch
+git clone https://github.com/jennyrchan/solace-admin
 ```
+  
+Make sure PostgreSQL is running and in the project directory run
+  
+```
+npm install
+```
+  
+to seed the database
+  
+```
+npm run seed
+```
+  
+then, to start the server run
+  
+```
+npm start
+```
+  
+and connect to localhost:1337
+  
+You can login with:  
+  
+Username: anuj@anuj.anuj  
+PW: 123  
+  
+  
+  
+### Installing Client-Side
+  
+```
+git clone https://github.com/jawang12/solace-react-native
+```
+  
+The application is linked to the deployed server so you do not need a local server running.
+  
+In the project directory run:
+  
+```
+npm install
+```
+  
+then to link the react-native libraries
+  
+```
+react-native link
+```
+  
+then, to start the application
+  
+```
+react-native run-ios
+```
+  
+and the app should automatically load!
+  
+You can login to the application with:   
+    
+Username: anuj@anuj.anuj  
+PW: 123  
+     
+Or you can create your own account and start recording!
+  
+  
+  
+## Running the tests
+  
+Our test suite features testing for the routing, database, API and frontend. 
+  
+On the backend we test Express, our database models and our Watson API behavior. 
+  
+On the frontend, we test our React-Native component and Redux store for expected behavior, and also test specific actions of out libraries and modules. 
+  
+All tests are run via
+  
+```
+npm test
+```
+  
+  
+  
+## Authors
+  
+* **Anuj Shah** - [GitHub](https://github.com/anujshah108)
+* **Jenny Chan** - [GitHub](https://github.com/jennyrchan)
+* **Winston Wang** - [GitHub](https://github.com/mobiuschang)
+* **Jimmy Wang** - [GitHub](https://github.com/jawang12)
 
-And then in another terminal window, run:
 
-```
-$ npm start
-```
-
-- React Native:
-```
-$ git clone https://github.com/jawang12/solace-react-native.git
-$ cd watson-react-native
-$ npm install
-$ react-native run-ios
-```
