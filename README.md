@@ -16,7 +16,7 @@ The client-side github is located at:
   
 https://github.com/jawang12/solace-react-native
 
-The chrome extension is located at:
+The chrome extension github is located at:
 
 https://github.com/mobiuschang/solace-chrome
 
