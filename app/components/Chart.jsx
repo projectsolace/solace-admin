@@ -73,10 +73,6 @@ export default class Chart extends Component {
     }
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
 
     const { logout, user } = this.props;
@@ -213,18 +209,15 @@ export default class Chart extends Component {
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#zip"><i className ="fa fa-address-book-o"></i> Zip Code <i className ="fa fa-fw fa-caret-down"></i></a>
                         <div className="row">
-                              <div className="col-md-1">
+                            <div className="col-md-1"></div>
+                            <div className="col-md-7">
+                              <div className="input-group">
+                                <form id = "zip" className ="collapse" onSubmit={this.onSubmitZipHandler}>
+                                  <input className ="form-control" placeholder= "Enter zip code" onChange={(event) => this.setState({zip: event.target.value})}/>
+                                </form>
                               </div>
-                              <div className="col-md-7">
-                                <div className="input-group">
-                                  <form id = "zip" className ="collapse" onSubmit={this.onSubmitZipHandler}>
-                                    <input className ="form-control" placeholder= "Enter zip code" onChange={(event) => this.setState({zip: event.target.value})}/>
-
-                                  </form>
-                                </div>
-                              </div>
+                            </div>
                         </div>
-
                     </li>
                 </ul>
             </div>
@@ -260,8 +253,7 @@ export default class Chart extends Component {
     )
   }
     return (
-      <div>
-      </div>
+      <div></div>
     )
   }
 }
