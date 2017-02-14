@@ -29,21 +29,15 @@ export default class Chart extends Component {
       chartContainer: "none"
     };
 
-    // this.onSubmitReligionHandler = this.onSubmitReligionHandler.bind(this)
     this.onSubmitZipHandler = this.onSubmitZipHandler.bind(this);
     this.onDemographicHandler = this.onDemographicHandler.bind(this);
     this.convertDemographicStr = this.convertDemographicStr.bind(this);
+    this.mapOptionsList = this.mapOptionsList.bind(this);
 
   }
 
   // Saved this code for future reference. How api call looks like
-  // onSubmitReligionHandler(value){
-  //   this.setState({loadingClass: "la-pacman", chartContainer: "hidden", chartHeading: "Religion", chartSubHeading: `${value}`})
   //   axios.get(`api/admin/religion/${value}`)
-  //   .then(response => {
-  //     this.setState({loadingClass: "none", currentGraph: response.data});
-  //   });
-  // }
 
   onSubmitZipHandler(event){
     event.preventDefault();
@@ -73,56 +67,25 @@ export default class Chart extends Component {
     }
   }
 
-  componentDidMount() {
-
+  mapOptionsList(optionsTypesList, demographic) {
+    return optionsTypesList.map((optionsCategory, i) => {
+      return (
+        <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler(demographic, optionsCategory)} > {optionsCategory} </li>
+      )
+    })
   }
 
   render() {
 
     const { logout, user } = this.props;
 
-    const incomeList = incomeTypes.map((incomeCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("incomelevel", incomeCategory)} > {incomeCategory} </li>
-      );
-    });
-
-    const educationList = educationTypes.map((educationCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("education", educationCategory)} >{educationCategory}</li>
-      );
-    });
-
-    const ethnicityList = ethnicityTypes.map((ethnicityCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("ethnicity", ethnicityCategory)} >{ethnicityCategory}</li>
-      );
-    });
-
-    const religionList = religionTypes.map((religionCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("religion", religionCategory )} >{religionCategory}</li>
-      );
-    });
-
-    const occupationList = occupationTypes.map((occupationCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("occupation", occupationCategory)} >{occupationCategory}</li>
-      );
-    });
-
-    const genderList = genderTypes.map((genderCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("gender", genderCategory)} >{genderCategory}</li>
-      );
-    });
-
-
-    const maritalStatusList = maritalStatusTypes.map((maritalStatusCategory, i ) => {
-      return (
-         <li className  = "chartOption"  key={i} onClick={(event) => this.onDemographicHandler("maritalStatus", maritalStatusCategory)} >{maritalStatusCategory}</li>
-      );
-    });
+    const incomeList = this.mapOptionsList(incomeTypes, 'incomelevel');
+    const educationList = this.mapOptionsList(educationTypes, 'education');
+    const ethnicityList = this.mapOptionsList(ethnicityTypes, 'ethnicity');
+    const religionList  = this.mapOptionsList(religionTypes, 'religion');
+    const occupationList  = this.mapOptionsList(occupationTypes, 'occupation');
+    const genderList  = this.mapOptionsList(genderTypes, 'gender');
+    const maritalStatusList = this.mapOptionsList(maritalStatusTypes, 'maritalStatus');
 
     let personality = this.state.currentGraph.personality
     let count = 1
@@ -213,18 +176,15 @@ export default class Chart extends Component {
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#zip"><i className ="fa fa-address-book-o"></i> Zip Code <i className ="fa fa-fw fa-caret-down"></i></a>
                         <div className="row">
-                              <div className="col-md-1">
+                            <div className="col-md-1"></div>
+                            <div className="col-md-7">
+                              <div className="input-group">
+                                <form id = "zip" className ="collapse" onSubmit={this.onSubmitZipHandler}>
+                                  <input className ="form-control" placeholder= "Enter zip code" onChange={(event) => this.setState({zip: event.target.value})}/>
+                                </form>
                               </div>
-                              <div className="col-md-7">
-                                <div className="input-group">
-                                  <form id = "zip" className ="collapse" onSubmit={this.onSubmitZipHandler}>
-                                    <input className ="form-control" placeholder= "Enter zip code" onChange={(event) => this.setState({zip: event.target.value})}/>
-
-                                  </form>
-                                </div>
-                              </div>
+                            </div>
                         </div>
-
                     </li>
                 </ul>
             </div>
@@ -260,8 +220,7 @@ export default class Chart extends Component {
     )
   }
     return (
-      <div>
-      </div>
+      <div></div>
     )
   }
 }
