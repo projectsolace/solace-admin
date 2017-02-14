@@ -4,9 +4,9 @@ Solace is a mental wellness mobile app that utilizes IBM Watson's Personality/Em
 
 The deployed Admin Panel and Backend Server is located at: https://solace-admin.herokuapp.com/
 
-To see our test data render for different demographics, you can login with:
+To see our test data render for different demographics, you can log in with:
   
-Login: anuj@anuj.anuj  
+Email: anuj@anuj.anuj  
 Password: 123  
 
 The client-side GitHub is located at: https://github.com/jawang12/solace-react-native
@@ -59,8 +59,8 @@ and connect to localhost:1337.
   
 You can log in with:  
   
-Login: anuj@anuj.anuj  
-PW: 123
+Email: anuj@anuj.anuj  
+Password: 123
   
 ### Installing Client-Side
   
@@ -90,7 +90,7 @@ react-native run-ios
 
 You can log in to the application with:   
 
-Login: anuj@anuj.anuj  
+Email: anuj@anuj.anuj  
 Password: 123  
      
 Or you can create your own account and start recording!
