@@ -84,14 +84,14 @@ function sendToWatson(text) {
   text = text.substr(0, 80000);
 
   const personality_insights = new PersonalityInsightsV3({
-    username: '825e1257-f5af-43d4-8afa-79d6fa99d4aa',
-    password: 'qK2HGTmsrYdO',
+    username: 'b3ac58e0-9045-40ae-b5dc-f5fed79850b8',
+    password: 'PocbDfsYecuu',
     version_date: '2016-10-19'
   });
 
   const tone_analyzer = new ToneAnalyzerV3({
-    username: '973b3ea5-4733-4fd3-a5af-f1edb7ddd485',
-    password: '1E3Qbkhx3RKI',
+    username: 'e6788a20-25bb-4983-924d-0def0ae56aa7',
+    password: 't3HGsBD2OUWR',
     version_date: '2016-05-19'
   });
 
