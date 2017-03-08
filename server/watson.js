@@ -15,11 +15,11 @@ module.exports = require('express').Router()
       password: 'eHKybbCaXbto'
     });
 
-    let file = fs.createWriteStream('file2.wav')
-    let stream = request('https://watsonapi.s3.amazonaws.com/%2Ftest.wav').pipe(file)
+    let file = fs.createWriteStream(`${req.body.userID}file.wav`)
+    let stream = request(`https://watsonapi.s3.amazonaws.com/%2F${req.body.userID}%2Frecording.wav`).pipe(file)
     stream.on('finish', function() {
 
-      file = fs.createReadStream('file2.wav')
+      file = fs.createReadStream(`${req.body.userID}file.wav`)
 
       const config = {
         // From file
