@@ -11,8 +11,8 @@ module.exports = require('express').Router()
   // Speech to text to Watson API
   .post('/', (req, res, next) => {
     const speech_to_text = new SpeechToTextV1({
-      username: 'f9086552-9381-43d4-89be-62b2294af8db',
-      password: 'eHKybbCaXbto'
+      username: 'f8df72af-f11d-4f3f-a75c-4fc9b84426a1',
+      password: 'g1rAijdesxSN'
     });
 
     let file = fs.createWriteStream(`${req.body.userID}file.wav`)
@@ -36,8 +36,8 @@ module.exports = require('express').Router()
           Recording.create({ text: resp, user_id: req.body.userID })
             .then(recording => {
               const personality_insights = new PersonalityInsightsV3({
-                username: 'b3ac58e0-9045-40ae-b5dc-f5fed79850b8',
-                password: 'PocbDfsYecuu',
+                username: '0a4bc524-e981-4dc5-b626-2d9fc3d5d4a8',
+                password: 'isxoGYvDjVbT',
                 version_date: '2016-10-19'
               });
 
@@ -55,8 +55,8 @@ module.exports = require('express').Router()
                   recording.update({ personality: response })
                     .then(recording => {
                       const tone_analyzer = new ToneAnalyzerV3({
-                        username: 'e6788a20-25bb-4983-924d-0def0ae56aa7',
-                        password: 't3HGsBD2OUWR',
+                        username: 'fc7f5b28-19d4-492e-b7c4-7574e4990d06',
+                        password: 'ZEpBAMtJApSr',
                         version_date: '2016-05-19'
                       });
 

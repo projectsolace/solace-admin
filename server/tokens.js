@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const  _ = require('lodash');
 const db = require('../db');
 const User = db.model('users');
-const bcrypt = require('bcryptjs');
 
 
 const createToken = (user) => {
@@ -56,7 +55,6 @@ router.post('/sessions/create', function(req, res, next) {
         if (!verifiedUser) {
           res.status(400).send("Invalid information");
         } else {
-          console.log(user);
           res.status(201).send({
             id_token: createToken(user),
             user: user
